@@ -54,3 +54,30 @@ The manuscript can be compiled with a standard LaTeX installation, for example
 ```bash
 latexmk -pdf missing_mass_extremizers.tex
 ```
+
+## Lean formalization (in progress)
+
+The pinned Lean 4/mathlib formalization is in `EntropyConstrainedMissingMass/`.
+It is **not yet a formalization of the entire paper**. The current theorem and
+proof-obligation correspondence is maintained in [FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md).
+
+With [elan](https://github.com/leanprover/elan) installed, run:
+
+```bash
+lake exe cache get
+lake build
+lake env lean scripts/audit_lean.lean
+python3 scripts/missing_mass_extremizers_certificates.py
+```
+
+`lean-toolchain`, `lakefile.toml`, and `lake-manifest.json` pin the compiler and
+dependencies. `.lake/` and compiled Lean artifacts are not version controlled.
+
+The initial modules cover probability vectors with their genuine ℓ¹ metric,
+extended Shannon entropy, convergence and continuity of missing mass,
+relabeling and zero extension, zero-entropy and support lemmas, entropy-root
+calculus, actual finite/countable candidate vectors, the entropy-series lemma,
+rational objective enclosures, and the final algebraic step of the curvature
+estimate. The main optimizer classification and its analytic dependencies
+remain unfinished. Production CI and main protection will be installed only
+after the complete formalization passes the required correspondence audit.
