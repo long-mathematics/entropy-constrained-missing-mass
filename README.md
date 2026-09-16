@@ -5,6 +5,7 @@ Research repository for the manuscript by Christopher D. Long.
 - [LaTeX source](missing_mass_extremizers.tex)
 - [Compiled PDF](missing_mass_extremizers.pdf)
 - [Exact certificate script](scripts/missing_mass_extremizers_certificates.py)
+- [Certificate output](scripts/missing_mass_extremizers_certificates.out)
 
 ## Abstract
 
@@ -27,6 +28,7 @@ Every optimizer is eventually one-heavy, with $m_t\sim ht$ equal light atoms of 
 - `missing_mass_extremizers.tex` — manuscript source.
 - `missing_mass_extremizers.pdf` — compiled manuscript.
 - `scripts/missing_mass_extremizers_certificates.py` — exact rational certificates for the certified examples in the manuscript; Python standard library only.
+- `scripts/missing_mass_extremizers_certificates.out` — output of the certificate script for the tracked verification cases.
 - `CITATION.cff` — citation metadata.
 - `AGENTS.md` — repository instructions for manuscript edits and validation.
 - `LICENSE` — MIT license.
@@ -37,6 +39,14 @@ Run the exact certificates with
 
 ```bash
 python3 scripts/missing_mass_extremizers_certificates.py
+```
+
+The tracked output is available in [`scripts/missing_mass_extremizers_certificates.out`](scripts/missing_mass_extremizers_certificates.out). Its final lines are
+
+```text
+Certified: heavy-branch unimodality fails.
+Certified: at t=3 and h=11/10, 6/5, 7/5 the unique types are light, heavy, light.
+All exact rational certificates passed.
 ```
 
 The manuscript can be compiled with a standard LaTeX installation, for example
