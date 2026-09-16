@@ -2,20 +2,31 @@
 
 The entire manuscript (1,350 lines, including all appendices) was read on
 2026-09-16. This is the initial exhaustive inventory, subject to the mandatory
-independent final reread. **One of 18 named manuscript results is proved in Lean: `lem:entropy-series`.**
+independent final reread. **Three of 18 named manuscript results are proved in Lean: `lem:entropy-series`, `lem:coefficient-extremum`, and `lem:comparison`.**
 The Python certificates are independent checks, not Lean proofs. Definitions,
 equation cross-checks, and subsidiary obligations are counted separately below.
 
 ## Persistent state and next action
 
-- Baseline: `c50920a`; work branch: `formalization/foundations-and-ledger`.
+- Baseline: `b8f5da9` (PR #1 squash-merged); work branch: `formalization/compactness-and-analytic-dependencies`.
 - Pinned Lean: v4.34.0; mathlib: `5ed2965256430c3649e86755f9576b54eca72435`.
-- Current frontier: entropy lower semicontinuity, compactness/attainment, the
-  three-coordinate differential geometry, and integral curvature identities.
-  Next theorem: lower semicontinuity of extended entropy in the ℓ¹ topology.
+- Current frontier: actual entropy Hessian/level curves, sharp curvature mixtures,
+  and repeated-size finite perturbations. The finite coefficient comparison, attainment, the
+  smooth three-root inverse, coefficient extremum, and the sharp kernel estimate
+  are checked. No finite-support assumption was used for attainment.
+- Current milestone validation: full `lake build` passed (2,898 jobs); namespace
+  axiom audit checked 685 declarations (601 theorem constants including generated
+  auxiliaries), all using only the three permitted standard axioms. Lexical audit
+  of all 36 milestone Lean files found no holes/custom axioms. Exact Python
+  certificates passed; ledger has 150 nodes, no missing dependency or cycle.
+  No manuscript or PDF changes in this milestone.
+- Next concrete proof units: EntropyHessian (actual level-curve Hessian),
+  SimplexIntegrals/SimplexCurvature (tilted simplex law), and RepeatedSize
+  (actual local-maximizer variations). These files are exploratory until their
+  bounded units are checked and included by the root module.
 - No production CI or protection should be installed before the complete final audit.
 - Editorial change only: GPT 6 Sol → GPT-6 Astra; no mathematical TeX changes.
-- Validation: `lake build` passed (2,273 jobs); `lake env lean scripts/audit_lean.lean`
+- Previous milestone validation: `lake build` passed (2,273 jobs); `lake env lean scripts/audit_lean.lean`
   audited 178 namespace declarations (154 theorem constants, including generated
   auxiliary declarations), permitting only propext, Classical.choice, Quot.sound.
   Source audit found no placeholders/custom axioms. All 18 named source labels
@@ -47,7 +58,7 @@ correspondence, not a numerical test or a theorem conditional on the result.
 
 ## Coverage and dependency graph
 
-Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 10 PROVED, 10 IN PROGRESS, 130 TODO, 0 BLOCKED. Named results proved: 1/18.
+Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 36 PROVED, 13 IN PROGRESS, 101 TODO, 0 BLOCKED. Named results proved: 3/18.
 
 The `Dependencies` fields are the adjacency-list dependency graph (arrows from
 an obligation to prerequisites); it was checked for missing nodes and cycles.
@@ -87,10 +98,10 @@ For every natural t (in particular t ≥ 1), ∑ p_i(1-p_i)^t converges absolute
 ### `local_topology`
 
 - Source: Introduction; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.local_topology`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `ProbabilityVector.dist_eq_tsum, LocalMaximizer, replaceFinite, dist_replaceFinite, tendsto_of_finite_coordinate_tendsto`.
+- Status: **PROVED**.
 - Dependencies: `probability`, `entropy`, `objective`.
-- Checked progress and remaining work: ProbabilityVector.dist_eq_tsum proves exact metric identity and LocalMaximizer uses IsLocalMaxOn in that metric; finite-coordinate perturbation convergence remains TODO.
+- Reformulation/equivalence/alternate proof: The exact l1 metric and genuine finite normalized replacements are constructed. Coordinate convergence on a fixed finite perturbation implies l1 convergence for arbitrary filters.
 
 The probability vectors carry the ℓ¹ topology. A feasible local maximizer means a neighborhood in this topology on which every feasible objective is at most its value. Finite-coordinate perturbations tending coordinatewise to the original vector tend in ℓ¹.
 
@@ -107,40 +118,40 @@ Entropy zero holds exactly for point masses; at t ≥ 1 their objective is zero.
 ### `root_coordinates`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.root_coordinates`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.localRoots, contDiffAt_localRoots, eventually_localRoots_positive_ordered, hasDerivAt_localRoots_E, hasDerivAt_localRoots_P`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual inverse-function-theorem inverse for (S,E,P), then fixed-S directional derivatives; no surrogate stationarity premise.
 
 For 0<x<y<z and fixed S=x+y+z, (E,P) are smooth local coordinates; sufficiently small changes retain positive distinct roots. Their derivatives are u_E=-u/W′(u) and u_P=1/W′(u), W(u)=u³-Su²+Eu-P.
 
 ### `integral_convergence`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.integral_convergence`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.integrableOn_I0, integrableOn_I1, integrableOn_curvature_numerator, I0_pos, I1_pos`.
+- Status: **IN PROGRESS**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: I0,I1 and every centered curvature numerator are checked. Individual Hessian integrals and their differentiation remain in progress.
 
 For every positive triple, I₀,I₁ and all integrals defining entropy Hessians and K converge; I₀>0 and I₁>0.
 
 ### `log_integral`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.log_integral`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.integral_reciprocal_difference`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Convergent reciprocal difference on Ioi 0; omission of endpoint zero does not change Lebesgue integrals.
 
 For u>0, log u=∫₀∞(1/(s+1)-1/(s+u)) ds.
 
 ### `root_partial_fractions`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.root_partial_fractions`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.partial_fractions_one, partial_fractions_root`.
+- Status: **PROVED**.
 - Dependencies: `root_coordinates`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Finite sums over Fin 3 equal the two exact rational functions; denominator nonvanishing is explicit.
 
 For distinct positive roots, ∑1/((s+u)W′(u))=1/D(s) and ∑u/((s+u)W′(u))=-s/D(s), for s≥0.
 
@@ -207,60 +218,60 @@ F₁=S-S²+2E and its entropy-curve first derivative is 2, excluding three sizes
 ### `homogeneous`
 
 - Source: §3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.homogeneous`.
-- Status: **TODO**.
+- Lean correspondence: `homogeneous3_eq_monomial_sum, homogeneous3_pos_of_ne_zero, homogeneous3_partial_fraction, homogeneousSeries_eq_product_inverse`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Explicit monomial sum equals the recursively defined coefficients. Formal power-series equality with the product of three inverses verifies the generating function, including repeated/zero variables.
 
 For three nonnegative variables, G=∏(1-r_i w)^(-1)=∑h_j w^j, where h_j is the complete homogeneous polynomial and negative indices are zero. Nonzero r implies h_j>0 for all j≥0.
 
 ### `turan`
 
 - Source: §3, eq:turan; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.turan`.
-- Status: **TODO**.
+- Lean correspondence: `homogeneous3_turan_all, homogeneous3_turan_nonneg, homogeneous3_ratio_antitone, homogeneous3_ratio_strictAnti`.
+- Status: **PROVED**.
 - Dependencies: `homogeneous`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The j=0 negative-index convention is explicit. Algebraic recurrence proves the identity directly at all real triples; positivity supplies the ratio conclusions.
 
 For all nonnegative triples and integers j≥0, h_j²-h_(j-1)h_(j+1)=h_j(r₁r₂,r₁r₃,r₂r₃)≥0. For nonzero r the successive ratios decrease; for all-positive r they decrease strictly.
 
 ### `coefficient_transfer`
 
 - Source: §3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.coefficient_transfer`.
-- Status: **TODO**.
+- Lean correspondence: `coefficientDifference_pos_of_le, coefficientDifference_le_of_pair_product, coefficient_extremum`.
+- Status: **IN PROGRESS**.
 - Dependencies: `turan`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Discrete recurrence comparison proves nondecrease under pair concentration and two explicit transfers prove the full bound. The original derivative identity and sigma exclusion are not yet individually checked.
 
 If b_N=h_N-h_(N-1)>0, all earlier b_j are positive, σ<2, and transferring mass from a smaller interior coordinate to a larger one preserves positivity and does not decrease b_N; at most two transfers reach a vertex of the fixed-sum cube slice. Include N=0,1, r=0 and σ=1,2 boundaries.
 
 ### `coefficient_boundary`
 
 - Source: §3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.coefficient_boundary`.
-- Status: **TODO**.
+- Lean correspondence: `coefficientDifference_two_ones, homogeneous2_one_geometric_identity, coefficientDifference_two_ones_le, coefficientDifference_zero_last_le_one`.
+- Status: **IN PROGRESS**.
 - Dependencies: `homogeneous`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Boundary bounds used by the full theorem are checked including sigma=1. Explicit one-one-zero power identity and all stated boundary classification assertions still need wrappers.
 
 At fixed σ∈(0,2), boundary representatives are (1,1,1-σ) for σ≤1 and (1,2-σ,0) for σ≥1. Coefficients b_N are respectively ∑_{k=0}^N(1-σ)^k≤1/σ and (2-σ)^N≤1.
 
 ### `comparison_ratios`
 
 - Source: §3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.comparison_ratios`.
-- Status: **TODO**.
+- Lean correspondence: `weightedCoefficient_pos_of_comparison, weightedCoefficient_pos_of_le, weightedCoefficient_middle_strict_concavity, weightedCoefficient_strict_log_concave, comparisonAuxCoefficient_pos_of_le`.
+- Status: **IN PROGRESS**.
 - Dependencies: `turan`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Positivity through n+1, strict Turan cross-product inequality and all a_j positivity are checked. Discrete middle concavity replaces exponential interpolation. Explicit ratio and interpolation assertion wrappers remain to be recorded.
 
 Under lem:comparison hypotheses with n≥1, all B_j=h_j-βh_(j-1) are positive through n+1 and B_j/B_(j-1) strictly decrease there, by the strictly concave exponential interpolation g. Hence a_j=B_j-αB_(j-1)>0 for 0≤j≤n.
 
 ### `comparison_telescoping`
 
 - Source: §3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.comparison_telescoping`.
-- Status: **TODO**.
+- Lean correspondence: `comparisonAuxCoefficient_telescoping, comparisonCoefficient_le_of_aux_nonneg, coefficient_comparison, comparisonCoefficient_eq_coeff`.
+- Status: **PROVED**.
 - Dependencies: `comparison_ratios`, `lem:coefficient-extremum`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact finite convolution equals the power-series coefficient; scaled extremum bound and strict telescoping bound include index zero.
 
 Under the comparison hypotheses, J=∑_{j=0}^{n-1}a_jB_(n-1-j)≤C k_(n-1)<C k_n/β with C=max(1,β/(3β-∑q_i)); n=0 has J=0,k₀=1.
 
@@ -317,30 +328,30 @@ A probability vector with at most two distinct positive coordinate values has fi
 ### `sorted_reduction`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.sorted_reduction`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.antitone_sortedNat, entropy_sortedNat, objective_sortedNat, coord_le_recip_of_antitone, isMaxOn_feasible_of_sorted`.
+- Status: **PROVED**.
 - Dependencies: `objective`, `entropy`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Alternate reduction: finite entropy-nonincreasing coarsenings converge in objective and can be sorted exactly. Compact sorted class therefore attains the unrestricted supremum without asserting a global infinite permutation.
 
 For the countably infinite optimization, symmetry and zero invariance allow a maximizing sequence of nonincreasing vectors. A sorted vector has p_i≤1/i for i≥1.
 
 ### `entropy_tail`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.entropy_tail`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.sorted_tail_le, uniform_sorted_tail, cauchySeq_of_sorted_coordinate_tendsto, isCompact_sortedFeasible`.
+- Status: **PROVED**.
 - Dependencies: `sorted_reduction`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Zero-based natural coordinates translate source i>N to n>=N. Coordinate convergence and uniform tails imply l1 Cauchy; completeness of the mass-one subtype preserves normalization.
 
 For a sorted feasible vector and N≥1, ∑_{i>N}p_i≤h/log(N+1). A coordinatewise limit of a uniformly entropy-bounded sorted sequence has mass one and the convergence is in ℓ¹.
 
 ### `entropy_lsc`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.entropy_lsc`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.lowerSemicontinuous_entropy_function, lowerSemicontinuous_entropy, isClosed_feasible`.
+- Status: **PROVED**.
 - Dependencies: `entropy`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Product-topology lower semicontinuity for extended entropy is proved first and composed with the continuous coordinate map.
 
 Entropy is lower semicontinuous under coordinatewise convergence of probability vectors by the nonnegative Fatou lemma.
 
@@ -357,30 +368,30 @@ For integer t≥1, |Φ_t(p)-Φ_t(q)|≤L_t‖p-q‖₁, where L_t=max_[0,1]|f′
 ### `attainment`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.attainment`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.exists_global_maximizer_finite, exists_global_maximizer_countable, exists_global_maximizer`.
+- Status: **PROVED**.
 - Dependencies: `entropy_tail`, `entropy_lsc`, `objective_lipschitz`, `zero_entropy`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: All nonempty countable index types, including finite ones, and all t>=0. Infinite case uses compact sorted set and entropy-nonincreasing finite coarsenings, an alternate proof of the same unrestricted maximum.
 
 For every t≥1 and finite h≥0, a feasible maximum exists, on finite alphabets by compactness and on countably infinite alphabets by the sorted diagonal sequence and tail bound.
 
 ### `atom_splitting`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.atom_splitting`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `ProbabilityVector.splitAtom, dist_splitAtom, entropy_splitAtom, objective_splitAtom, objective_lt_splitAtom`.
+- Status: **PROVED**.
 - Dependencies: `entropy`, `objective`, `objective_calculus`.
-- Checked progress and remaining work: ObjectiveCalculus.missingMassTerm_split_strict proves strict scalar improvement. Constructing the perturbation, its ℓ¹ distance and entropy increment remains TODO.
+- Reformulation/equivalence/alternate proof: Actual double coordinate update in the l1 probability subtype; exact distance/entropy/objective change and positive entropy increment tending to zero.
 
 For 0<ε<a≤1, splitting a into a-ε,ε changes ℓ¹ distance by 2ε, raises entropy by a positive increment tending to zero, and strictly increases Φ_t for every integer t≥1.
 
 ### `entropy_saturation`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.entropy_saturation`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.entropy_saturation_of_zero_coord, entropy_saturation_of_finite_support`.
+- Status: **IN PROGRESS**.
 - Dependencies: `finite_support`, `atom_splitting`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual local maximality plus an unused coordinate or explicit finite support yields saturation. Finite support for every local maximizer is still outstanding, so the unconditional claim remains open.
 
 Every countably infinite alphabet local maximizer has H=h: use finite support and split into an unused coordinate if H<h.
 
@@ -407,10 +418,10 @@ For repeated x<y, -μ=(f′(y)-f′(x))/log(y/x)=∫_x^y uf″(u)du/u / log(y/x)
 ### `quasiconvex`
 
 - Source: §5.1; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.quasiconvex`.
-- Status: **TODO**.
+- Lean correspondence: `weightedCurvature_strict_quasiconvex_on_interval, deriv_weightedCurvature_mul_one_sub, curvatureDerivativeQuadratic_strictAnti`.
+- Status: **IN PROGRESS**.
 - Dependencies: `objective_calculus`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The full strict quasiconvexity conclusion is checked by a root-free quadratic sign argument, including t=1,2. Explicit displayed radical-root identities remain unchecked.
 
 For f_t and integer t≥1, uf″_t is strictly quasiconvex on the interval containing f″_t≤0. For t=1 it is -2u; for t>1 its derivative has the displayed quadratic with roots 0<r_-<2/(t+1)<r_+.
 
@@ -507,10 +518,10 @@ For heavy m≥2, write z=rq,q=1/(m+r),r>1. The necessary qf″_t(q)+μ≤0 inste
 ### `small_samples_scalar`
 
 - Source: §5.4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.small_samples_scalar`.
-- Status: **TODO**.
+- Lean correspondence: `smallSampleNumerator_decompose, hasDerivAt_smallSampleNumerator_two, smallSampleNumerator_two_pos, hasDerivAt_logRatioGap, logRatioGap_pos`.
+- Status: **PROVED**.
 - Dependencies: `objective_calculus`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact scalar expressions, derivative and positivity for every real m>=2 and r>1, stronger than natural multiplicities.
 
 N_m=N₂+4(m-2)(r-1-log r); N₂(1)=0 and N₂′(r)=2(r-1/r-2log r)>0 for r>1, since the inner derivative is (r-1)²/r².
 
@@ -617,30 +628,30 @@ For independent samples of any finite/countable probability law, E K_(n,1)=n Φ_
 ### `uniform_curvature`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.uniform_curvature`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.I0_uniform, I1_uniform, m_uniform, K_uniform`.
+- Status: **PROVED**.
 - Dependencies: `integral_convergence`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact integrals with convergence and positive a, using inverse-power primitives.
 
 For x=y=z=a>0, I₀=1/(2a²), I₁=1/(2a), m=a and K=4/(15a).
 
 ### `kernel_density`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.kernel_density`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.integral_kernel, integral_mul_kernel`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact nonnegative rational density, mass one and first moment a on positive half-line.
 
 κ_a(s)=2a²/(s+a)³ is a probability density on [0,∞) with mean a for every a>0.
 
 ### `kernel_remainder`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.kernel_remainder`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.J_closed_form, J_one, kernel_remainder_identity, kernel_bound, kernel_bound_eq_iff`.
+- Status: **PROVED**.
 - Dependencies: `kernel_density`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact positive remainder evaluated by a rational/logarithmic primitive instead of six Taylor derivatives. Strictness and equality iff a=1 are checked.
 
 J_*(a)=∫(s-1)²κ₁(s)κ_a(s)ds has the displayed logarithmic closed form for a≠1 and J_*(1)=8/15. Its difference from 2(9-a)/(15(a+1)) equals the displayed nonnegative integral remainder for every a>0. Include both sides of a=1.
 
@@ -657,10 +668,10 @@ The smooth M(a) defined from J_* has M^(j)(1)=0 for 0≤j≤5 and M^(6)(a)=360(a
 ### `mixture_bound`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.mixture_bound`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.mixture_curvature_bound, mixed_kernel_scaling, integrable_mixed_kernel_prod, integral_mixed_mixture_eq`.
+- Status: **PROVED**.
 - Dependencies: `kernel_remainder`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Law represented on subtype Icc a b with positive a: every compact positive support lies in such an interval. Scaling, product integrability, Fubini and quadratic expansion are proved.
 
 For any probability law λ with compact positive support, mλ=EλV and G=Eλκ_V obey ∫(s-mλ)²G²≥8mλ/15+(2/3)Eλ[(V-mλ)²/(V+mλ)]. Justify Fubini, scaling, and the square expansion.
 
@@ -717,10 +728,10 @@ For 0<u≤1, -log u=∑_{j≥1}(1-u)^j/j. Multiplication by p_i and nonnegative 
 ### `entropy_difference`
 
 - Source: Appendix B.1; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.entropy_difference`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `ProbabilityVector.hasSum_objective_sub_div_zero, summable_abs_objective_sub_div, exists_objective_lt_of_equal_entropy, objective_eq_of_equal_entropy_of_le`.
+- Status: **PROVED**.
 - Dependencies: `lem:entropy-series`.
-- Checked progress and remaining work: EntropySeries proves absolute summability and zero sum. The sign-change consequence is still TODO.
+- Reformulation/equivalence/alternate proof: Equal finite extended entropy gives absolutely summable zero weighted difference and the required sign contradiction.
 
 For two finite equal-entropy laws, ∑_{j≥1}(Φ_j(p)-Φ_j(q))/j converges absolutely to zero. If a difference is nonnegative at all positive integers and strictly positive at some integer, equal entropy is impossible.
 
@@ -923,10 +934,10 @@ if $x=y=z$.
 ### `lem:coefficient-extremum`
 
 - Source: The finite coefficient comparison; TeX label: `lem:coefficient-extremum`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.lem_coefficient_extremum`.
-- Status: **TODO**.
+- Lean correspondence: `coefficient_extremum, coefficientDifference_eq`.
+- Status: **PROVED**.
 - Dependencies: `coefficient_transfer`, `coefficient_boundary`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact all-degree bound for all cube points with positive sigma, including zero/repeated/boundary coordinates. Discrete pair-transfer recurrence replaces derivative/first-zero proof; stronger zero-last endpoint bound avoids separate sigma>=2 exclusion.
 
 Exact manuscript statement/display:
 
@@ -941,10 +952,10 @@ If $r\in[0,1]^3$ and $\sigma=3-\sum_i r_i>0$, then
 ### `lem:comparison`
 
 - Source: The finite coefficient comparison; TeX label: `lem:comparison`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.lem_comparison`.
-- Status: **TODO**.
+- Lean correspondence: `coefficient_comparison_series, comparisonSeriesCoefficient_eq, homogeneousSeries_eq_product_inverse`.
+- Status: **PROVED**.
 - Dependencies: `comparison_telescoping`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact manuscript assumptions and strict bound at all n including negative-index coefficient zero. Formal-series identity bridges the finite convolution. Discrete middle concavity and Turan replace real exponential interpolation.
 
 Exact manuscript statement/display:
 
@@ -1352,10 +1363,10 @@ Exact manuscript statement/display:
 ### `eq:turan`
 
 - Source: The finite coefficient comparison; TeX label: `eq:turan`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_turan`.
-- Status: **TODO**.
+- Lean correspondence: `homogeneous3_turan_all, homogeneous3_turan_nonneg`.
+- Status: **PROVED**.
 - Dependencies: `turan`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact identity at every natural index, with previousHomogeneous3 zero at index zero.
 
 Exact manuscript statement/display:
 
@@ -1367,10 +1378,10 @@ h_j(r)^2-h_{j-1}(r)h_{j+1}(r)
 ### `eq:b-bound`
 
 - Source: The finite coefficient comparison; TeX label: `eq:b-bound`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_b_bound`.
-- Status: **TODO**.
+- Lean correspondence: `coefficient_extremum, coefficientDifference_eq`.
+- Status: **PROVED**.
 - Dependencies: `lem:coefficient-extremum`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Natural index with previous coefficient zero at index zero is exact; sigma=3-x-y-z is definitionally expanded.
 
 Exact manuscript statement/display:
 
@@ -1382,10 +1393,10 @@ b_j:=h_j(r)-h_{j-1}(r)\le C_\sigma:=\max\{1,\sigma^{-1}\}
 ### `eq:coefficient`
 
 - Source: The finite coefficient comparison; TeX label: `eq:coefficient`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_coefficient`.
-- Status: **TODO**.
+- Lean correspondence: `coefficient_comparison_series, comparisonCoefficient_eq_coeff`.
+- Status: **PROVED**.
 - Dependencies: `lem:comparison`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact formal coefficient of (1-alpha*w)(1-beta*w)^2 G^2 with source negative-index convention.
 
 Exact manuscript statement/display:
 
@@ -1432,10 +1443,10 @@ Exact manuscript statement/display:
 ### `eq:strict-quasiconvex`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:strict-quasiconvex`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_strict_quasiconvex`.
-- Status: **TODO**.
+- Lean correspondence: `weightedCurvature_strict_quasiconvex_on_interval`.
+- Status: **PROVED**.
 - Dependencies: `lem:repeated`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact three-point strict inequality on the actual nonpositive-curvature interval; alternate proof uses the decreasing derivative quadratic without solving its roots.
 
 Exact manuscript statement/display:
 
@@ -1818,10 +1829,10 @@ Exact manuscript statement/display:
 ### `eq:kernel`
 
 - Source: The entropy-curvature estimate; TeX label: `eq:kernel`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_kernel`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.kernel_bound, kernel_bound_eq_iff`.
+- Status: **PROVED**.
 - Dependencies: `kernel_remainder`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact sharp bound with equality characterization, valid on both sides of one.
 
 Exact manuscript statement/display:
 
@@ -1833,10 +1844,10 @@ J_*(a)\ge\frac{2(9-a)}{15(a+1)}
 ### `eq:mixture`
 
 - Source: The entropy-curvature estimate; TeX label: `eq:mixture`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_mixture`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.mixture_curvature_bound`.
+- Status: **PROVED**.
 - Dependencies: `mixture_bound`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Same probability law, mean, mixture density and dispersion expression on the compact positive interval representation.
 
 Exact manuscript statement/display:
 
