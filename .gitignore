@@ -20,3 +20,9 @@
 
 # Keep the final preprint PDF if it is added to the repository.
 !missing_mass_extremizers.pdf
+
+# Lean/Lake build products and downloaded dependencies
+.lake/
+*.olean
+*.ilean
+*.trace
