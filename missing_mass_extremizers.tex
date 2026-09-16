@@ -1,0 +1,1350 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+ pdftitle={Extremizers of the expected missing mass under an entropy constraint},
+ pdfauthor={Christopher D. Long},
+ pdfsubject={Two-size structure, finite classification, and sharp asymptotics}}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[1]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\K}{\mathcal K}
+\newcommand{\HH}{\mathcal H}
+\title{Extremizers of the expected missing mass\\under an entropy constraint}
+\author{Christopher D. Long\\[3pt]
+ \small\href{mailto:galizur@gmail.com}{\texttt{galizur@gmail.com}}}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a discrete probability distribution $p=(p_i)$, the expected mass of
+symbols absent from $t$ independent samples is
+$\Phi_t(p)=\sum_i p_i(1-p_i)^t$. For every positive integer $t$ and finite
+entropy budget $h\ge0$, we prove that every $\ell^1$-local maximizer under
+$H(p)\le h$ has at most two distinct positive coordinate values, and all
+but at most one positive coordinate are equal. This holds on finite and
+countably infinite alphabets and improves the four-size bound of Berend,
+Kontorovich, and Zagdanski (2017). On a countably infinite alphabet, we give
+an exact finite classification of all global maximizers: a unique
+one-light or uniform candidate is compared with an explicitly bounded
+family of one-heavy candidates, whose masses are uniquely specified by
+entropy equations. The one-light or uniform candidate is uniquely optimal
+for $t=1,2$. For fixed $h>0$, the optimal value $B_t(h)$ satisfies
+\[
+ \frac{h}{B_t(h)}=\log t+\log\log t+2
+       +O_h\!\left(\frac{\log\log t}{\log t}\right).
+\]
+Every optimizer is eventually one-heavy, with $m_t\sim ht$ equal light
+atoms of size $q_t\sim1/(t\log t)$. The two-size proof combines a
+three-coordinate entropy-curvature estimate with a finite coefficient
+comparison. Crossing theorems describe the winning intervals of the
+candidate distributions, and the classification gives exact extrema for
+singleton counts, discovery increments, and expected coverage.
+\end{abstract}
+
+\section{Introduction}
+Let $I$ be a nonempty finite or countably infinite alphabet, and write
+\[
+ H(p)=-\sum_{i\in I}p_i\log p_i,\qquad
+ \Phi_t(p)=\sum_{i\in I}p_i(1-p_i)^t,
+\]
+\[
+ \mathcal P_h(I)=\left\{p_i\ge0:\ \sum_{i\in I}p_i=1,\ H(p)\le h\right\}.
+\]
+Here $0\log0=0$ and logarithms are natural. For integer $t\ge1$, $\Phi_t$
+is the expected mass of symbols absent from $t$ independent samples.
+An \emph{atom size} is a distinct positive coordinate value.
+
+Without an entropy constraint, Berend and Kontorovich~\cite{BK} showed that
+finite-alphabet local maximizers have all but possibly one coordinate equal,
+with the remaining coordinate no smaller. For the entropy-constrained
+problem, Berend, Kontorovich, and Zagdanski~\cite[Theorem~1]{BKZ} obtained a
+four-size bound for finite-alphabet local maximizers and asked whether four
+sizes can occur. They also characterized the maximizing shape for
+$t=1$~\cite[Proposition~3]{BKZ}. The following theorem replaces four by two.
+
+\begin{theorem}\label{thm:main}
+For every integer $t\ge1$ and $0\le h<\infty$, every local maximizer of
+$\Phi_t$ on $\mathcal P_h(I)$, in the $\ell^1$ topology, has at most two
+atom sizes and has finite support. The maximum is attained. If $I$ is
+countably infinite, every local maximizer satisfies $H(p)=h$.
+\end{theorem}
+
+On countably infinite alphabets, attainment and finite support of global
+maximizers were established in~\cite[Theorem~2]{BKZ}, and entropy saturation
+in~\cite[Proposition~1 and Corollary~1]{BKZ}. The finite-subvector argument in
+their proof of Theorem~2 also yields a four-size bound, hence finite support,
+for $\ell^1$-local maximizers: fixing the complement makes each finite
+subvector locally optimal with its own mass and entropy budget, to which
+their four-size argument applies. We include the compactness and
+atom-splitting arguments for completeness.
+
+Theorem~\ref{thm:exceptional} strengthens the two-size conclusion: every
+nonuniform local maximizer has one exceptional atom and an equimass block.
+For a countably infinite alphabet, Theorem~\ref{thm:finite-classification}
+reduces the global problem to a finite candidate list with an explicit
+multiplicity cutoff. Theorem~\ref{thm:asymptotics} determines
+the next terms beyond the first-order asymptotic $h/\log t$ from
+\cite[Theorems~3--4]{BKZ}, and also determines the asymptotic sizes and
+multiplicities of the maximizing atoms.
+
+The proof of the two-size theorem occupies the next three sections.
+Section~\ref{sec:classification} gives the multiplicity restriction and
+finite classification, and Section~\ref{sec:asymptotics} gives the
+asymptotics and occupancy consequences. The appendices contain the
+entropy-curvature estimate, crossing comparisons, the finite-alphabet
+classification, and rationally certified examples.
+
+\section{The three-coordinate reduction}\label{sec:three-coordinate}
+
+Fix three distinct positive coordinates $x<y<z$, keeping all other
+coordinates unchanged, and put
+\begin{equation}\label{eq:geometry}
+\begin{gathered}
+ S=x+y+z,\quad E=xy+xz+yz,\quad P=xyz,\quad D(s)=(s+x)(s+y)(s+z),\\
+ I_0=\int_0^\infty\frac{\dd s}{D(s)},\qquad
+ I_1=\int_0^\infty\frac{s\dd s}{D(s)},\qquad m=I_1/I_0,\\
+ \K=\frac1{I_0}\int_0^\infty\frac{(s-m)^2}{D(s)^2}\dd s.
+\end{gathered}
+\end{equation}
+The map $(x,y,z)\mapsto(S,E,P)$ has nonzero Vandermonde Jacobian at a
+triple of distinct roots. Thus, with $S$ fixed, $(E,P)$ are smooth local
+coordinates; sufficiently small changes preserve positivity and distinctness.
+The three-coordinate entropy $\HH=-x\log x-y\log y-z\log z$ satisfies
+\begin{equation}\label{eq:entropy-derivatives}
+ \HH_E=I_1,\qquad \HH_P=I_0.
+\end{equation}
+Indeed the roots of $W(u)=u^3-Su^2+Eu-P$ satisfy
+$u_E=-u/W'(u)$ and $u_P=1/W'(u)$. Use
+\[
+ \log u=\int_0^\infty\left(\frac1{s+1}-\frac1{s+u}\right)\dd s
+\]
+and the partial fractions, with each sum over $u\in\{x,y,z\}$,
+\[
+ \sum_u\frac1{(s+u)W'(u)}=\frac1{D(s)},\qquad
+ \sum_u\frac{u}{(s+u)W'(u)}=-\frac{s}{D(s)}.
+\]
+Differentiation under the integral gives
+\[
+ \HH_{EE}=-\int_0^\infty\frac{s^2}{D(s)^2}\dd s,\quad
+ \HH_{EP}=-\int_0^\infty\frac{s}{D(s)^2}\dd s,\quad
+ \HH_{PP}=-\int_0^\infty\frac{\dd s}{D(s)^2}.
+\]
+Since $\HH_P=I_0>0$, the entropy level set through the triple is a smooth
+curve $P=P(E)$, and implicit differentiation yields
+\begin{equation}\label{eq:curve}
+ P'=-m,\qquad P''=\K.
+\end{equation}
+We shall use the following estimate, proved in Appendix~\ref{app:entropy}.
+\begin{lemma}\label{lem:entropy}
+For every positive triple,
+\begin{equation}\label{eq:entropy-bound}
+ 0<m\le S/3,\qquad \K\ge\frac{16}{15(S+m)}.
+\end{equation}
+Equality in $m\le S/3$, or in the lower bound for $\K$, holds if and only
+if $x=y=z$.
+\end{lemma}
+
+Let $f_t(u)=u(1-u)^t$ and $F_t(E,P)=f_t(x)+f_t(y)+f_t(z)$. For
+$\phi(E)=F_t(E,P(E))$, the chain rule and~\eqref{eq:curve} give
+\begin{equation}\label{eq:variations}
+\begin{aligned}
+ \phi'&=\mathcal D_t:=(F_t)_E-m(F_t)_P,\\
+ \phi''&=\mathcal C_t:=(F_t)_{EE}-2m(F_t)_{EP}
+                  +m^2(F_t)_{PP}+\K(F_t)_P.
+\end{aligned}
+\end{equation}
+At a local maximum containing the selected triple, both directions along
+this entropy level curve are feasible, whether or not the entropy constraint
+is active. Hence $\mathcal D_t=0$ and $\mathcal C_t\le0$. At fixed $E$,
+decreasing $P$ decreases $\HH$, because $\HH_P>0$, and is also feasible.
+Local maximality therefore gives $(F_t)_P\ge0$.
+
+If $t>1$ and $(F_t)_P=0$, stationarity gives $(F_t)_E=0$ as well. Since
+$(E,P)$ are local coordinates on the fixed-sum plane, this forces
+$f_t'(x)=f_t'(y)=f_t'(z)$. Rolle's theorem would then give two distinct
+zeros of $f_t''$ between $x$ and $z$, whereas
+\[
+ f_t''(u)=t(1-u)^{t-2}((t+1)u-2)
+\]
+has only one zero in $(0,1)$. Thus $R_t:=(F_t)_P>0$. We will prove
+\begin{equation}\label{eq:target}
+ \mathcal D_t=0,\quad R_t>0,\quad S\le1
+ \quad\Longrightarrow\quad \mathcal C_t>0,
+\end{equation}
+contradicting $\phi''\le0$. The case $t=1$ is immediate:
+$F_1=S-S^2+2E$ gives $\mathcal D_1=2$, contradicting stationarity.
+
+\section{The finite coefficient comparison}
+For three nonnegative variables $r=(r_1,r_2,r_3)$, let
+\[
+ G_r(w)=\prod_{i=1}^3(1-r_iw)^{-1}
+       =\sum_{j\ge0}h_j(r)w^j,\qquad h_j=0\quad(j<0).
+\]
+Thus $h_j$ is the complete homogeneous polynomial of degree $j$. We use
+\begin{equation}\label{eq:turan}
+ h_j(r)^2-h_{j-1}(r)h_{j+1}(r)
+ =h_j(r_1r_2,r_1r_3,r_2r_3)\ge0\qquad(j\ge0).
+\end{equation}
+For distinct positive variables, this identity follows by substituting
+$h_j(r)=\sum_i r_i^{j+2}/\prod_{k\ne i}(r_i-r_k)$; continuity gives the
+general case. If $r\ne0$, then every $h_j(r)>0$ for $j\ge0$, and
+$h_j/h_{j-1}$ is nonincreasing for $j\ge1$, strictly decreasing when all
+three variables are positive.
+
+\begin{lemma}\label{lem:coefficient-extremum}
+If $r\in[0,1]^3$ and $\sigma=3-\sum_i r_i>0$, then
+\begin{equation}\label{eq:b-bound}
+ b_j:=h_j(r)-h_{j-1}(r)\le C_\sigma:=\max\{1,\sigma^{-1}\}
+ \qquad(j\ge0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The case $j=0$ is immediate. Fix $N\ge1$. If $b_N\le0$, there is nothing
+to prove, so suppose $b_N>0$. This excludes $r=0$. By~\eqref{eq:turan},
+\[
+ \frac{h_j}{h_{j-1}}\ge\frac{h_N}{h_{N-1}}>1
+ \qquad(1\le j\le N),
+\]
+so $b_j>0$ for $0\le j\le N$.
+
+The regime $\sigma\ge2$ is incompatible with $b_N>0$. Indeed, every
+monomial in $h_N$ occurs at least once in $(r_1+r_2+r_3)h_{N-1}$, so
+\[
+ h_N\le(r_1+r_2+r_3)h_{N-1}\le h_{N-1}
+ \qquad\text{if }\sigma\ge2.
+\]
+We may therefore assume $0<\sigma<2$.
+
+For $N\ge2$, differentiation of the generating function gives
+\[
+ (\partial_{r_i}-\partial_{r_k})b_N
+ =(r_i-r_k)[w^{N-2}]
+ \frac{(1-w)G_r(w)}{(1-r_iw)(1-r_kw)}.
+\]
+The coefficient on the right is
+\[
+ \sum_{\nu=0}^{N-2}h_\nu(r_i,r_k)b_{N-2-\nu},
+ \qquad h_\nu(r_i,r_k)=\sum_{a+b=\nu}r_i^a r_k^b,
+\]
+which is positive whenever $b_N>0$. Thus the derivative is nonnegative
+if $r_i\ge r_k$. For $N=1$, $b_1=\sum_i r_i-1$ is constant at fixed sum.
+
+Choose two coordinates in $(0,1)$ with $r_i\ge r_k$, and transfer mass
+from the smaller to the larger:
+\[
+ r_i(s)=r_i+s,\qquad r_k(s)=r_k-s,\qquad
+ 0\le s\le\min\{1-r_i,r_k\}.
+\]
+The ordering is preserved since $r_i(s)-r_k(s)=r_i-r_k+2s\ge0$.
+Writing $g(s)=b_N(r(s))$, we have $g'(s)\ge0$ whenever $g(s)>0$.
+If $g$ had a first zero $s_*$, it would be nondecreasing on $[0,s_*)$,
+and continuity would give $g(s_*)\ge g(0)>0$, a contradiction. Hence
+positivity persists and $b_N$ does not decrease throughout the transfer.
+
+Keep boundary coordinates fixed and repeat. Each transfer puts at least
+one additional coordinate at $0$ or $1$, so at most two transfers leave
+at most one coordinate in $(0,1)$. At the fixed sum, the resulting vector
+is, up to permutation,
+\[
+ (1,1,1-\sigma)\quad(0<\sigma\le1),\qquad
+ (1,2-\sigma,0)\quad(1\le\sigma<2).
+\]
+The corresponding coefficients of $(1-w)G_r(w)$ are
+\[
+ \sum_{k=0}^N(1-\sigma)^k\le\sigma^{-1},\qquad
+ (2-\sigma)^N\le1,
+\]
+respectively. Since the transfers do not decrease the original positive
+coefficient, these endpoint bounds prove~\eqref{eq:b-bound}. The formulas
+also hold at $\sigma=1$ by continuity.
+\end{proof}
+
+\begin{lemma}\label{lem:comparison}
+Let $\beta>q_1>q_2>q_3>0$, $\alpha>0$, and $n\ge0$ be an integer.
+Write $G=G_q$, $k_j=h_j(q)-\alpha h_{j-1}(q)$, and suppose
+$k_n>0$, $k_{n+1}\ge\beta k_n$. Then
+\begin{equation}\label{eq:coefficient}
+\begin{aligned}
+ J&:=[w^{n-1}](1-\alpha w)(1-\beta w)^2G(w)^2\\
+  &<\max\left\{\frac1\beta,\frac1{3\beta-\sum_iq_i}\right\}k_n,
+\end{aligned}
+\end{equation}
+where negative-index coefficients are zero.
+\end{lemma}
+\begin{proof}
+For $n=0$, $J=0$, $k_0=1$, and the right-hand side is positive since
+$3\beta-\sum_iq_i>0$. Let $n\ge1$, abbreviate $h_j=h_j(q)$, and put
+\[
+ B_j=h_j-\beta h_{j-1},\qquad
+ a_j=k_j-\beta k_{j-1}=B_j-\alpha B_{j-1}.
+\]
+By~\eqref{eq:turan},
+\[
+ \frac{h_{n+1}}{h_n}-\frac{k_{n+1}}{k_n}
+ =\frac{\alpha(h_n^2-h_{n-1}h_{n+1})}{h_nk_n}>0.
+\]
+Thus $h_{n+1}/h_n>\beta$, and the decreasing $h$-ratios give
+$B_j>0$ for $0\le j\le n+1$.
+
+The partial-fraction representation is
+\[
+ B_j=\sum_{i=1}^3c_iq_i^j,\qquad
+ c_i=\frac{q_i(q_i-\beta)}{\prod_{k\ne i}(q_i-q_k)},
+\]
+with $c_1<0$, $c_2>0$, $c_3<0$. Define the exponential interpolation
+\[
+ g(s)=c_1(q_1/q_2)^s+c_2+c_3(q_3/q_2)^s,
+ \qquad g(j)=B_j/q_2^j.
+\]
+We have $g''<0$. Since $g(0)>0$ and $g(n+1)>0$, concavity makes $g$
+positive on $[0,n+1]$. Therefore
+$(\log g)''=(g''g-(g')^2)/g^2<0$, and the ratios $B_j/B_{j-1}$ strictly
+decrease for $1\le j\le n+1$. The hypothesis gives
+\[
+ B_{n+1}-\alpha B_n=a_{n+1}=k_{n+1}-\beta k_n\ge0.
+\]
+Consequently $B_j/B_{j-1}>B_{n+1}/B_n\ge\alpha$ for $1\le j\le n$,
+so $a_j>0$ for $0\le j\le n$, with $a_0=1$.
+
+Let $C=\max\{1,\beta/(3\beta-\sum_iq_i)\}$. Applying
+Lemma~\ref{lem:coefficient-extremum} to $r_i=q_i/\beta$ gives
+$B_j\le C\beta^j$ for every $j\ge0$. Hence
+\[
+ J=\sum_{j=0}^{n-1}a_jB_{n-1-j}
+ \le C\sum_{j=0}^{n-1}a_j\beta^{n-1-j}
+ =Ck_{n-1}<\frac C\beta k_n.
+\]
+The equality telescopes using $a_j=k_j-\beta k_{j-1}$ and $k_{-1}=0$;
+the last inequality is $a_n>0$.
+\end{proof}
+
+\section{Completion of the two-size proof}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By the three-coordinate reduction, it remains to prove~\eqref{eq:target}
+for $t\ge2$. Set $n=t-2$, $\alpha=t/(t+1)$, $\beta=1+m$, and
+$q=(1-x,1-y,1-z)$. In the notation of Lemma~\ref{lem:comparison},
+\begin{equation}\label{eq:derivatives}
+\begin{aligned}
+ R_t&=(t+1)k_n,\\
+ \mathcal D_t&=(t+1)(k_{n+1}-\beta k_n),\\
+ \mathcal C_t&=(t+1)(\K k_n-J).
+\end{aligned}
+\end{equation}
+To verify these identities, denote the second divided difference by
+\[
+ \psi[x,y,z]=\sum_{u\in\{x,y,z\}}\frac{\psi(u)}{W'(u)}.
+\]
+Root differentiation gives
+$(F_t)_P=f_t'[x,y,z]$ and $(F_t)_E=-(uf_t'(u))[x,y,z]$.
+For integer $j\ge0$, the second divided difference of $(1-u)^j$ at
+$x,y,z$ is $h_{j-2}(q)$, by partial fractions. Since
+\[
+ f_t'(u)=(t+1)(1-u)^t-t(1-u)^{t-1},
+\]
+we obtain $(F_t)_P=(t+1)k_n$ and $(F_t)_E=(t+1)(k_{n+1}-k_n)$,
+which give the first two identities in~\eqref{eq:derivatives}.
+This is where integrality of $t$ enters: the powers are polynomials,
+and $n=t-2$ is a nonnegative integer indexing the coefficient comparison.
+
+For the third identity, observe that
+\[
+ G_q(w)^{-1}=1-(3-S)w+(3-2S+E)w^2-(1-S+E-P)w^3.
+\]
+With $m$ frozen at the point of differentiation,
+\[
+ (\partial_E-m\partial_P)G_q=-w^2(1-\beta w)G_q^2.
+\]
+Along the entropy curve, $\frac{d}{dE}G_q=(\partial_E-m\partial_P)G_q$
+and $\beta'=m'=-\K$. Differentiating
+\[
+ \frac{\mathcal D_t}{t+1}
+ =[w^{n+1}](1-\alpha w)(1-\beta w)G_q
+\]
+therefore gives
+\[
+\begin{aligned}
+ \frac{\mathcal C_t}{t+1}
+ &=[w^{n+1}](1-\alpha w)
+       \bigl(\K wG_q-w^2(1-\beta w)^2G_q^2\bigr)\\
+ &=\K k_n-J.
+\end{aligned}
+\]
+Here $\mathcal C_t=d\mathcal D_t/dE$ by~\eqref{eq:variations}; the
+$\K$ term accounts for the variation of $m$ along the curve.
+
+At a stationary triple, $0<x<y<z<1$ gives
+$\beta>q_1>q_2>q_3>0$. Also $R_t>0$ and $\mathcal D_t=0$ give
+$k_n>0$ and $k_{n+1}=\beta k_n$. Thus all hypotheses of
+Lemma~\ref{lem:comparison} hold. Since $S\le1$, it yields
+\[
+ \frac J{k_n}<\max\left\{\frac1{1+m},\frac1{S+3m}\right\}
+ \le\frac1{S+m}.
+\]
+Lemma~\ref{lem:entropy} and~\eqref{eq:derivatives} now imply
+\begin{equation}\label{eq:positive-curvature}
+ \frac{\mathcal C_t}{R_t}=\K-\frac J{k_n}
+ >\frac1{15(S+m)}>0.
+\end{equation}
+This proves~\eqref{eq:target}, excluding every local maximum with three
+distinct positive coordinate values. The same calculation also gives the
+quantitative bound $\mathcal C_t>R_t/(20S)$, since $m\le S/3$.
+
+These perturbations change only three coordinates and tend to zero in
+$\ell^1$, so the argument applies equally to countably infinite alphabets.
+Each fixed positive size can occur only finitely often in a probability
+vector. Hence at most two positive sizes imply finite support.
+
+For completeness, we give the compactness argument
+of~\cite[Lemmas~1--2 and Theorem~2]{BKZ}. On a countably infinite alphabet,
+identify $I$ with $\mathbb N$. Both $H$ and $\Phi_t$ are symmetric and are
+unaffected by insertion or deletion of zero coordinates. It therefore
+suffices to take a maximizing sequence whose coordinates are nonincreasing.
+For such a probability vector, $p_i\le1/i$, and for $N\ge1$,
+\[
+ h\ge H(p)\ge\sum_{i>N}p_i\log\frac1{p_i}
+ \ge\log(N+1)\sum_{i>N}p_i.
+\]
+Choose a coordinatewise convergent subsequence $p^{(k)}\to p$ by a diagonal
+argument. The uniform tail bound prevents loss of mass: passing to the limit
+in finite partial sums and then letting $N\to\infty$ gives
+$\sum_i p_i=1$. The same tail bound, together with
+convergence on each finite initial segment, gives
+$\|p^{(k)}-p\|_1\to0$. Since $-u\log u\ge0$ on $[0,1]$, Fatou's lemma
+gives
+\[
+ H(p)\le\liminf_{k\to\infty}H(p^{(k)})\le h.
+\]
+Finally, $f_t\in C^1[0,1]$ and $f_t(0)=0$, so
+\[
+ |\Phi_t(p)-\Phi_t(q)|\le L_t\|p-q\|_1,
+ \qquad L_t=\max_{0\le u\le1}|f_t'(u)|<\infty.
+\]
+Thus the maximum is attained. On a finite alphabet, attainment follows
+directly from compactness of the feasible set and continuity of the objective.
+
+For entropy saturation, use the atom-splitting argument
+of~\cite[Proposition~1]{BKZ}. Let $I$ be countably infinite and let $p$ be
+a local maximizer with $H(p)<h$. Its support is finite, so an unused
+coordinate is available. Replace a positive atom $a$ by $a-\varepsilon$
+and put $\varepsilon$ in that unused coordinate, where $0<\varepsilon<a$.
+The new vector $p^{\varepsilon}$ satisfies
+\[
+ \|p^{\varepsilon}-p\|_1=2\varepsilon,\qquad
+ H(p^{\varepsilon})-H(p)
+ =a\log a-(a-\varepsilon)\log(a-\varepsilon)
+                -\varepsilon\log\varepsilon\longrightarrow0.
+\]
+The entropy increment is positive, and
+\[
+ f_t(a-\varepsilon)+f_t(\varepsilon)
+ >(a-\varepsilon)(1-a)^t+\varepsilon(1-a)^t=f_t(a).
+\]
+For sufficiently small $\varepsilon$, this is a feasible improvement
+arbitrarily close to $p$, contradicting local maximality. Hence every
+local maximizer satisfies $H(p)=h$.
+\end{proof}
+
+\section{One exceptional atom and a finite classification}\label{sec:classification}
+
+\subsection{The multiplicity restriction}
+The following elementary criterion isolates the additional second-variation
+argument. It uses only perturbations of four coordinates.
+
+\begin{lemma}[Repeated-size criterion]\label{lem:repeated}
+Let $f\in C[0,1]\cap C^2(0,1)$, and let $J\subset(0,1)$ be an interval
+containing every $u$ for which $f''(u)\le0$. Suppose that $g(u)=uf''(u)$
+satisfies
+\begin{equation}\label{eq:strict-quasiconvex}
+ g(v)<\max\{g(x),g(y)\}\qquad(x<v<y,\quad x,y\in J).
+\end{equation}
+At a finite-dimensional local maximum of $\sum_i f(p_i)$ under normalization
+and an upper Shannon-entropy constraint, at most one distinct positive
+coordinate value can occur more than once. The same conclusion holds on a
+countable alphabet whenever the objective is well-defined and the point is
+locally maximal under finite-coordinate perturbations.
+\end{lemma}
+\begin{proof}
+If a value $u$ occurs twice, replacing these copies by $u+\varepsilon$ and
+$u-\varepsilon$ preserves mass and strictly decreases entropy. Local
+maximality and Taylor expansion therefore imply $f''(u)\le0$.
+
+Suppose two distinct values $x<y$ both occur at least twice, and vary just
+$(x,x,y,y)$. On these four coordinates, the gradients of mass and entropy
+are independent. The fixed-mass, fixed-entropy set through the point is
+therefore a smooth manifold, whether or not the entropy inequality is
+active. Equality-constrained first-order conditions give constants
+$\lambda,\mu$ such that
+\[
+ f'(u)=\lambda+\mu(-\log u-1),\qquad u\in\{x,y\}.
+\]
+In particular,
+\begin{equation}\label{eq:log-average}
+ -\mu=\frac{f'(y)-f'(x)}{\log(y/x)}
+ =\frac{\displaystyle\int_x^y g(u)\,\frac{\dd u}{u}}
+        {\log(y/x)}.
+\end{equation}
+A pair-difference direction within either repeated block is tangent to both
+constraints. The second-order condition on this manifold is
+\[
+ f''(u)+\frac\mu u\le0,\qquad u\in\{x,y\}.
+\]
+Thus $g(x),g(y)\le-\mu$. But $x,y\in J$, and
+\eqref{eq:strict-quasiconvex} makes the weighted average
+in~\eqref{eq:log-average} strictly smaller than
+$\max\{g(x),g(y)\}$, a contradiction. All perturbations used here have
+finite support, which also proves the countable-alphabet assertion.
+\end{proof}
+
+\begin{theorem}[One exceptional atom]\label{thm:exceptional}
+Under the hypotheses of Theorem~\ref{thm:main}, every nonuniform local
+maximizer has, up to permutation and zero coordinates, the form
+\begin{equation}\label{eq:exceptional-form}
+ p_m(z)=\left(z,\underbrace{q,\ldots,q}_{m\text{ copies}}\right),
+ \qquad q=\frac{1-z}{m},\quad m\in\mathbb N,\quad 0<z<1.
+\end{equation}
+Thus either $z<q$ (one light atom) or $z>q$ (one heavy atom).
+\end{theorem}
+\begin{proof}
+For $t=1$, $u f_t''(u)=-2u$ is strictly decreasing. For $t>1$, the set
+where $f_t''\le0$ is $J=(0,2/(t+1)]$, and
+\[
+ \frac{\dd}{\dd u}\bigl(uf_t''(u)\bigr)
+ =-t(1-u)^{t-3}\bigl(t(t+1)u^2-4tu+2\bigr).
+\]
+The quadratic roots are
+\[
+ r_\pm=\frac{2t\pm\sqrt{2t(t-1)}}{t(t+1)}.
+\]
+They satisfy $0<r_-<2/(t+1)<r_+$. Hence $uf_t''(u)$ strictly decreases
+and then strictly increases on $J$, so it satisfies
+\eqref{eq:strict-quasiconvex}. Lemma~\ref{lem:repeated} shows that two
+distinct repeated sizes are impossible. Theorem~\ref{thm:main} supplies
+finite support and at most two sizes, so at least one of their
+multiplicities is one.
+\end{proof}
+
+A uniform law on $m+1$ points is the limiting case $z=q=1/(m+1)$.
+A nonuniform binary law has both a one-light and a one-heavy description,
+which differ only by permutation. For support size at least three the two
+nonuniform descriptions are distinct.
+
+\subsection{The entropy-matched candidates}
+For the rest of this section the alphabet is countably infinite. Define
+\[
+ B_t(h)=\max_{p\in\mathcal P_h(\mathbb N)}\Phi_t(p).
+\]
+If $h=0$, only point masses are feasible, and $B_t(0)=0$. Fix $h>0$ and put
+$k=\lfloor e^h\rfloor$. For $m\ge1$, set
+\begin{equation}\label{eq:branch-functions}
+\begin{aligned}
+ E_m(z)&=-z\log z-(1-z)\log\frac{1-z}{m},\\
+ V_{m,s}(z)&=z(1-z)^s+(1-z)\left(1-\frac{1-z}{m}\right)^s.
+\end{aligned}
+\end{equation}
+The functions extend continuously to the entropy endpoints. Since
+\begin{equation}\label{eq:entropy-branch-derivative}
+ E_m'(z)=\log\frac{1-z}{mz},
+\end{equation}
+$E_m$ increases from $\log m$ to $\log(m+1)$ on $[0,1/(m+1)]$ and
+decreases from $\log(m+1)$ to $0$ on $[1/(m+1),1]$.
+
+There is a unique $a\in[0,1/(k+1))$ with $E_k(a)=h$. Define
+\begin{equation}\label{eq:light-candidate}
+ p_{\rm L}=p_k(a),\qquad y=\frac{1-a}{k},\qquad
+ \ell(s)=V_{k,s}(a).
+\end{equation}
+If $h=\log k$, then $a=0$, and deleting its zero coordinate gives the
+uniform law on $k$ points. Otherwise $p_{\rm L}$ is one-light and has
+$k+1$ positive coordinates.
+
+For every integer $m\ge k$, there is a unique
+$z_m\in(1/(m+1),1)$ with $E_m(z_m)=h$. Define
+\begin{equation}\label{eq:heavy-candidates}
+ q_m=\frac{1-z_m}{m},\qquad
+ p_m^{\rm H}=p_m(z_m),\qquad b_m(s)=V_{m,s}(z_m).
+\end{equation}
+The dependence on the fixed entropy $h$ is suppressed in this notation.
+Theorem~\ref{thm:exceptional} and entropy saturation show that every global
+maximizer is among $p_{\rm L}$ and the $p_m^{\rm H}$, $m\ge k$.
+When $0<h<\log2$, $p_1^{\rm H}$ is the binary duplicate of $p_{\rm L}$.
+The real parameter $s$ in $\ell(s)$ and $b_m(s)$ will also be useful for
+comparing these candidate values; the structural theorems continue to
+require an integer sample size.
+
+\subsection{A uniform cutoff for the heavy family}
+\begin{lemma}[Heavy-tail cutoff]\label{lem:cutoff}
+Fix $h>0$ and a real exponent $s\ge1$. Interpolate the heavy formulas by
+allowing $m>e^h-1$ to be real and taking the unique root
+$E_m(z_m)=h$ with $z_m>1/(m+1)$. Then
+\begin{equation}\label{eq:cutoff-decrease}
+ \frac{\dd}{\dd m}b_m(s)<0\qquad\text{whenever }m\ge sh+1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+This is an interpolation of the formulas, not a probability vector with
+nonintegral multiplicities. Write $z=z_m$, $q=(1-z)/m$, and
+$\sigma=\log(z/q)>0$. The entropy equation is
+\begin{equation}\label{eq:heavy-entropy-sigma}
+ h=-\log z+(1-z)\sigma.
+\end{equation}
+Implicit differentiation gives
+\begin{equation}\label{eq:heavy-m-derivatives}
+ \frac{\dd z}{\dd m}=\frac q\sigma,
+ \qquad
+ \frac{\dd q}{\dd m}=-\frac{q(1+\sigma)}{m\sigma}.
+\end{equation}
+With $f_s(u)=u(1-u)^s$, it follows that
+\begin{equation}\label{eq:heavy-objective-derivative}
+ \frac{\dd b_m(s)}{\dd m}=\frac q\sigma\Psi_s(z,q),\qquad
+ \Psi_s(z,q)=f_s'(z)-f_s'(q)+sq\sigma(1-q)^{s-1}.
+\end{equation}
+
+If $z\le1/s$, hold $z$ fixed and put
+\[
+ A_z(u)=f_s'(u)-su\log(z/u)(1-u)^{s-1}.
+\]
+Direct differentiation yields
+\[
+ A_z'(u)=s\bigl(1+\log(z/u)\bigr)(1-u)^{s-2}(su-1).
+\]
+This is strictly negative for $q<u<z$. Hence
+$\Psi_s(z,q)=A_z(z)-A_z(q)<0$.
+
+If $z>1/s$, then $f_s'(z)<0$, and
+\[
+ \Psi_s(z,q)=f_s'(z)
+ -(1-q)^{s-1}\bigl(1-q-sq(1+\sigma)\bigr).
+\]
+By~\eqref{eq:heavy-entropy-sigma} and $\log z<z-1$,
+\[
+ (1-z)(1+\sigma)=h+\log z+1-z<h.
+\]
+Consequently $sq(1+\sigma)<sh/m$ and $q<1/m$. If $m\ge sh+1$, then
+\[
+ 1-q-sq(1+\sigma)>1-\frac{sh+1}{m}\ge0.
+\]
+Thus $\Psi_s(z,q)<0$ in this case as well.
+\end{proof}
+
+\begin{theorem}[Exact finite classification]\label{thm:finite-classification}
+For integer $t\ge1$ and $h>0$, put
+\begin{equation}\label{eq:M-cutoff}
+ M=M(t,h)=\max\{k,\lceil th+1\rceil\},\qquad k=\lfloor e^h\rfloor.
+\end{equation}
+Then
+\begin{equation}\label{eq:finite-maximum}
+ B_t(h)=\max\{\ell(t),b_k(t),b_{k+1}(t),\ldots,b_M(t)\}.
+\end{equation}
+Up to permutation and zero coordinates, the global maximizers are exactly
+the candidates in this list attaining the displayed maximum. In particular,
+every global maximizer has at most $M+1$ positive coordinates.
+\end{theorem}
+\begin{proof}
+The candidate list before truncation is exhaustive by
+Theorem~\ref{thm:exceptional} and entropy saturation. Every candidate is
+feasible. Lemma~\ref{lem:cutoff} gives $b_j(t)<b_M(t)$ for every integer
+$j>M$, which proves the formula and its equality statement.
+\end{proof}
+
+Thus the atom sizes are specified by unique monotone entropy roots, and the
+remaining comparison is finite. All ties are retained. Appendix~\ref{app:crossings}
+gives crossing intervals specifying when each candidate wins;
+Appendix~\ref{app:finite-alphabet} treats a fixed finite alphabet, where the
+entropy constraint can be slack.
+
+\subsection{Sample sizes one and two}
+\begin{corollary}\label{cor:small-samples}
+For $t=1$ and $t=2$, the unique global maximizer on a countably infinite
+alphabet, up to permutation and zero coordinates, is $p_{\rm L}$.
+Equivalently, $B_t(h)=\ell(t)$ for $h>0$.
+\end{corollary}
+The $t=1$ case recovers the maximizing shape in
+\cite[Proposition~3]{BKZ}.
+\begin{proof}
+It suffices to exclude every distinct heavy candidate with $m\ge2$.
+Write $z=rq$, $q=1/(m+r)$, and $r>1$. The fixed-mass, fixed-entropy
+second-order condition in a pair-difference direction among the repeated
+$q$-atoms is
+\begin{equation}\label{eq:small-sample-hessian}
+ qf_t''(q)+\mu\le0,\qquad
+ \mu=\frac{f_t'(q)-f_t'(z)}{\log r},
+\end{equation}
+by the same equality-manifold argument as in Lemma~\ref{lem:repeated}.
+For $t=1$, the left side is
+\[
+ 2q\left(\frac{r-1}{\log r}-1\right)>0.
+\]
+For $t=2$, it is
+\[
+ \frac{N_m(r)}{(m+r)^2\log r},\qquad
+ N_m(r)=(r-1)(4m+r-3)-(4m+4r-6)\log r.
+\]
+Now
+\[
+ \begin{aligned}
+ N_m(r)&=N_2(r)+4(m-2)(r-1-\log r),\\
+ N_2(r)&=(r-1)(r+5)-(4r+2)\log r,\\
+ N_2'(r)&=2\left(r-\frac1r-2\log r\right)>0\qquad(r>1).
+ \end{aligned}
+\]
+The last inequality follows by differentiating its parenthesis, whose
+derivative is $(r-1)^2/r^2$ and whose value at $1$ is zero. Since
+$N_2(1)=0$, we have $N_m(r)>0$, again contradicting
+\eqref{eq:small-sample-hessian}. The only possible heavy candidate with
+$m=1$ is the binary duplicate of $p_{\rm L}$. Attainment now proves the
+claim, including uniqueness.
+\end{proof}
+
+\section{Sharp asymptotics and occupancy consequences}\label{sec:asymptotics}
+Throughout this section the entropy $h>0$ is fixed and the alphabet is
+countably infinite. Berend, Kontorovich, and Zagdanski proved
+$B_t(h)\sim h/\log t$ by matching first-order upper and lower
+bounds~\cite[Theorems~3--4]{BKZ}. The classification yields the following
+refinement and the scales of all optimizing atoms.
+
+\begin{theorem}[Fixed-entropy asymptotics]\label{thm:asymptotics}
+As integer $t\to\infty$,
+\begin{equation}\label{eq:sharp-asymptotic}
+ \frac{h}{B_t(h)}
+ =\log t+\log\log t+2
+  +O_h\!\left(\frac{\log\log t}{\log t}\right).
+\end{equation}
+Every global maximizer is eventually one-heavy. Writing any such maximizer
+as
+\[
+ p_t=\left(1-L_t,
+       \underbrace{q_t,\ldots,q_t}_{m_t\text{ copies}}\right),
+ \qquad m_tq_t=L_t,
+\]
+we have, uniformly over the choice of a maximizer,
+\begin{equation}\label{eq:optimizer-scales}
+ L_t\sim\frac h{\log t},\qquad
+ q_t\sim\frac1{t\log t},\qquad
+ m_t\sim ht.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $T=\log t$. For a heavy vector with total light mass $L=mq$, the exact
+entropy and objective are
+\begin{equation}\label{eq:L-entropy-objective}
+ \begin{aligned}
+ h&=-(1-L)\log(1-L)-L\log q,\\
+ \Phi_t(p)&=(1-L)L^t+L(1-q)^t.
+ \end{aligned}
+\end{equation}
+It is convenient to set
+\begin{equation}\label{eq:A-L}
+ A(L)=-\frac{1-L}{L}\log(1-L)
+     =1-\frac L2+O(L^2)\qquad(L\downarrow0).
+\end{equation}
+All constants below may depend on $h$, but not on the maximizing vector.
+
+\paragraph{A lower bound with integer multiplicity.}
+Choose $m=\lceil ht\rceil$ and solve the heavy entropy equation for $L$.
+For sufficiently large $t$, $h<\log(m+1)$, so this root exists. Its entropy
+can also be written as $h=H_2(L)+L\log m$, where
+$H_2(L)=-L\log L-(1-L)\log(1-L)\ge0$. Thus
+$L\le h/\log m=O_h(T^{-1})$. With $d=h/L$, the entropy equation becomes
+\[
+ d=\log(m/h)+\log d+A(L)
+  =T+\log d+1+O_h(T^{-1}).
+\]
+Since $d\ge\log m$ and $d-\log d$ is increasing for $d>1$, this gives
+\begin{equation}\label{eq:d-lower-candidate}
+ d=T+\log T+1+O_h\!\left(\frac{\log T}{T}\right).
+\end{equation}
+For example, substituting $T+\log T+1$ in $d-\log d$ gives an error
+$O(\log T/T)$, and the derivative is bounded away from zero in this range.
+Moreover,
+\[
+ tq=\frac{th}{md}=\frac1d+O_h\!\left(\frac1{tT}\right),
+ \qquad
+ -t\log(1-q)=\frac1d+O_h\!\left(\frac1{tT}\right).
+\]
+Since $B_t(h)\ge L(1-q)^t$, it follows that
+\begin{equation}\label{eq:reciprocal-upper}
+ \begin{aligned}
+ \frac h{B_t(h)}
+ &\le d\exp\!\left(\frac1d+O_h\!\left(\frac1{tT}\right)\right)\\
+ &=T+\log T+2+O_h\!\left(\frac{\log T}{T}\right).
+ \end{aligned}
+\end{equation}
+In particular $B_t(h)\ge c_h/T$ for some $c_h>0$ and all sufficiently
+large $t$.
+
+\paragraph{A uniform upper bound.}
+At fixed $h$, the light or uniform candidate has a fixed finite positive
+support, so its objective decays exponentially in $t$. The preceding
+lower bound and Theorem~\ref{thm:finite-classification} therefore imply
+that every maximizer is eventually heavy.
+
+Consider any such maximizer, with largest atom $z=1-L$. Since
+$H(p)\ge-\log z$, we have $z\ge e^{-h}$ and
+$L\le\rho_h:=1-e^{-h}<1$. The heavy atom contributes at most $\rho_h^t$.
+Put $u=tq$ and $d=h/L$. From
+\[
+ L(1-q)^t=B_t(h)-(1-L)L^t\ge\frac{c_h}{2T}
+\]
+for large $t$, and $(1-q)^t\le e^{-u}$, we get
+$u\le\log(2T/c_h)=O_h(\log T)$. The entropy identity gives
+$h\ge L(T-\log u)$, so $L=O_h(T^{-1})$. Therefore
+\begin{equation}\label{eq:optimizer-d}
+ d=T-\log u+1+O_h(T^{-1}).
+\end{equation}
+Let $R=Le^{-u}$. We have $R\ge c_h/(2T)$ and
+$B_t(h)\le R+\rho_h^t$. Consequently
+\begin{equation}\label{eq:reciprocal-uniform}
+ \frac h{B_t(h)}
+ \ge de^u-O_h(T^2\rho_h^t)
+ =de^u-o_h(T^{-1}).
+\end{equation}
+This explicitly controls the error from discarding the heavy atom.
+
+The bounds~\eqref{eq:reciprocal-upper} and
+\eqref{eq:reciprocal-uniform} force $u<1$ for all sufficiently large $t$.
+Indeed, if $u\ge1$, then~\eqref{eq:optimizer-d} and
+$u\le\log(2T/c_h)$ imply
+\[
+ de^u\ge e\bigl(T-O_h(\log\log T)\bigr),
+\]
+contradicting~\eqref{eq:reciprocal-upper}. For $u<1$, equation
+\eqref{eq:optimizer-d} gives $d\ge T$ for large $t$. Using
+$e^u\ge1+u$ and putting $v=Tu$, we obtain
+\begin{equation}\label{eq:scalar-gap}
+ \begin{aligned}
+ de^u&\ge d+Tu\\
+ &\ge T+\log T+1+v-\log v-O_h(T^{-1})\\
+ &\ge T+\log T+2-O_h(T^{-1}),
+ \end{aligned}
+\end{equation}
+because $v-\log v\ge1$. Combining this with
+\eqref{eq:reciprocal-upper} and~\eqref{eq:reciprocal-uniform} proves
+\eqref{eq:sharp-asymptotic}.
+
+\paragraph{The optimizing scales.}
+The same inequalities give
+\[
+ 0\le v-\log v-1
+ =O_h\!\left(\frac{\log T}{T}\right).
+\]
+The function on the left has its unique zero at $v=1$ and tends to infinity
+at both ends of $(0,\infty)$. Hence $v\to1$, uniformly over all maximizers.
+Thus $tq=u\sim1/T$. Equation~\eqref{eq:optimizer-d} now gives $d\sim T$,
+so $L=h/d\sim h/T$ and $m=L/q\sim ht$, as required.
+\end{proof}
+
+\begin{corollary}[Expectation-level sample complexity]\label{cor:sample-complexity}
+For fixed $h>0$, define
+\[
+ N_h(\varepsilon)=\min\{t\in\mathbb N:B_t(h)\le\varepsilon\}.
+\]
+Then
+\begin{equation}\label{eq:sample-complexity}
+ N_h(\varepsilon)\sim
+ \frac{\varepsilon}{e^2h}\exp\!\left(\frac h\varepsilon\right)
+ \qquad(\varepsilon\downarrow0).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The function $B_t(h)$ is strictly decreasing in integer $t$: at an optimizer
+for $t+1$, positive entropy implies that every positive atom is below one,
+so $\Phi_t(p)>\Phi_{t+1}(p)$. Also $B_t(h)\to0$ by
+Theorem~\ref{thm:asymptotics}. Put $A=h/\varepsilon$ and
+$S=A-\log A-2$. For any fixed $\eta>0$, apply
+\eqref{eq:sharp-asymptotic} at the integers nearest $e^{S-\eta}$ and
+$e^{S+\eta}$. Their reciprocal objective values are
+$A-\eta+o(1)$ and $A+\eta+o(1)$, respectively. They therefore bracket
+$N_h(\varepsilon)$. It follows that
+$\log N_h(\varepsilon)=S+o(1)$, proving the assertion.
+\end{proof}
+
+\begin{corollary}[Singletons, discovery, and coverage]\label{cor:occupancy}
+Let $K_n$ be the number of distinct symbols in $n$ independent samples,
+let $K_{n,1}$ be the number occurring exactly once, and let $C_n$ be the
+probability mass of the observed symbols. Then
+\begin{equation}\label{eq:occupancy-extrema}
+ \begin{aligned}
+ \max_{H(p)\le h}\EE_p K_{n,1}&=nB_{n-1}(h) &&(n\ge2),\\
+ \max_{H(p)\le h}\EE_p(K_{t+1}-K_t)&=B_t(h) &&(t\ge1),\\
+ \min_{H(p)\le h}\EE_p C_t&=1-B_t(h) &&(t\ge1).
+ \end{aligned}
+\end{equation}
+The optimizers are exactly those in Theorem~\ref{thm:finite-classification},
+with the corresponding sample-size index.
+\end{corollary}
+\begin{proof}
+Linearity of expectation gives
+\[
+ \EE_p K_{n,1}=n\sum_i p_i(1-p_i)^{n-1},\qquad
+ \EE_p(K_{t+1}-K_t)=\sum_i p_i(1-p_i)^t,
+\]
+and $\EE_p C_t=1-\Phi_t(p)$. These identities prove every assertion.
+\end{proof}
+In particular the singleton estimator $K_{n,1}/n$ has maximal expectation
+$B_{n-1}(h)$. The optimization in~\eqref{eq:occupancy-extrema} concerns
+expectations, rather than estimation error or tail probabilities.
+
+\appendix
+\section{The entropy-curvature estimate}\label{app:entropy}
+\begin{proof}[Proof of Lemma~\ref{lem:entropy}]
+For a uniform triple $x=y=z=a$, direct integration gives
+\[
+ I_0=\frac1{2a^2},\qquad I_1=\frac1{2a},\qquad
+ m=a,\qquad \K=\frac4{15a}=\frac{16}{15(S+m)}.
+\]
+This proves the lemma, with equality, in the uniform case. We first establish
+a kernel estimate and its mixture form, and then apply them to a nonuniform
+triple.
+
+For $a>0$, set $\kappa_a(s)=2a^2/(s+a)^3$, a probability density on
+$[0,\infty)$ of mean $a$, and
+$J_*(a)=\int_0^\infty(s-1)^2\kappa_1(s)\kappa_a(s)\dd s$.
+The kernel estimate is
+\begin{equation}\label{eq:kernel}
+ J_*(a)\ge\frac{2(9-a)}{15(a+1)}
+ =\frac{13}{15}-\frac a3+\frac{(a-1)^2}{3(a+1)}.
+\end{equation}
+Here is an explicit positive remainder, with $b_v=1+v(a-1)$:
+\[
+ J_*(a)-\frac{2(9-a)}{15(a+1)}
+ =\frac{2(a-1)^2}{5(a+1)}\int_0^1
+ \frac{v(1-v)^5(2b_v^3+12b_v^2-10b_v+13)}{b_v^4}\dd v.
+\]
+The cubic is positive since it equals
+$2b_v^3+12(b_v-5/12)^2+131/12$ and $b_v>0$.
+For verification, direct integration gives, for $a\ne1$,
+\[
+ J_*(a)=\frac{4a^2(a^2+10a+13)\log a
+       -2(a-1)(7a^3+33a^2+9a-1)}{(a-1)^5}.
+\]
+For $M(a)=\frac{15}{2}(a-1)^5(a+1)(J_*(a)-2(9-a)/(15(a+1)))$, with
+its smooth extension at $a=1$, one has
+\[
+ M^{(j)}(1)=0\quad(0\le j\le5),\qquad
+ M^{(6)}(a)=\frac{360(a-1)(2a^3+12a^2-10a+13)}{a^4}.
+\]
+Taylor's integral remainder gives the displayed identity on both sides
+of $1$; directly $J_*(1)=8/15$.
+
+For a probability law $\lambda$ supported in a compact subset of $(0,\infty)$,
+put $m_\lambda=\int v\dd\lambda(v)$ and
+$G(s)=\int\kappa_v(s)\dd\lambda(v)$. Scaling~\eqref{eq:kernel} gives
+\[
+\begin{aligned}
+ \int_0^\infty(s-m_\lambda)^2\kappa_{m_\lambda}(s)\kappa_v(s)\dd s
+ &=m_\lambda J_*(v/m_\lambda)\\
+ &\ge\frac{13m_\lambda}{15}-\frac v3
+       +\frac{(v-m_\lambda)^2}{3(v+m_\lambda)}.
+\end{aligned}
+\]
+Averaging and using $\int v\dd\lambda(v)=m_\lambda$ yields
+\[
+ \int_0^\infty(s-m_\lambda)^2\kappa_{m_\lambda}(s)G(s)\dd s
+ \ge\frac{8m_\lambda}{15}
+    +\frac13\int\frac{(v-m_\lambda)^2}{v+m_\lambda}\dd\lambda(v).
+\]
+Expand the nonnegative integral
+$\int_0^\infty(s-m_\lambda)^2(G-\kappa_{m_\lambda})^2\dd s$ and use
+$\int_0^\infty(s-m_\lambda)^2\kappa_{m_\lambda}(s)^2\dd s=8m_\lambda/15$.
+It follows that
+\begin{equation}\label{eq:mixture}
+ \int_0^\infty(s-m_\lambda)^2G(s)^2\dd s
+ \ge\frac{8m_\lambda}{15}
+      +\frac23\int\frac{(v-m_\lambda)^2}{v+m_\lambda}\dd\lambda(v).
+\end{equation}
+
+Now let $(x,y,z)$ be nonuniform. Let $(U_1,U_2)$ have density $2$ on
+$\{(u_1,u_2):u_1,u_2\ge0,\ u_1+u_2\le1\}$, set $U_3=1-U_1-U_2$, and
+put $V=xU_1+yU_2+zU_3$. Thus $(U_1,U_2,U_3)$ is uniform on the probability
+simplex and $\EE V=S/3$. Two elementary integrations over the simplex give
+\[
+ D(s)^{-1}=\EE(s+V)^{-3},\qquad
+ I_0=\tfrac12\EE V^{-2},\quad I_1=\tfrac12\EE V^{-1}.
+\]
+Tilt its law by $\dd\lambda(v)=v^{-2}\dd\mathbb P_V(v)/(2I_0)$. Then
+\[
+ G(s)=\frac1{I_0D(s)},\quad
+ \EE_\lambda V=m,\quad b_2:=\EE_\lambda V^2=\frac1{2I_0},\quad
+ \EE_\lambda V^3=(S/3)b_2.
+\]
+Consequently
+\[
+ \EE_\lambda[(V-m)^2(V+m)]=(S/3-m)b_2.
+\]
+Since $V$ is positive and nonconstant, the left-hand side is strictly
+positive, so $0<m<S/3$. In particular, the following denominators are
+positive. Cauchy--Schwarz gives
+\[
+ \EE_\lambda\frac{(V-m)^2}{V+m}
+ \ge\frac{\bigl(\EE_\lambda(V-m)^2\bigr)^2}
+            {\EE_\lambda[(V-m)^2(V+m)]}
+ =\frac{(b_2-m^2)^2}{(S/3-m)b_2}.
+\]
+Substitute this bound into~\eqref{eq:mixture}, where $m_\lambda=m$, and
+multiply by $I_0$ to obtain
+\[
+ \K\ge\frac8{15}I_1+\frac{(1-2mI_1)^2}{S-3m}.
+\]
+Also $D(s)\le(s+S/3)^3$ by the arithmetic--geometric mean inequality,
+so $j:=SI_1\ge3/2$. Put $r=m/S$, $d=1-3r>0$, and $v=j-3/2\ge0$.
+The identities
+\[
+ \frac8{15}j+\frac{(1-2rj)^2}{d}-\frac{36-48r}{25}
+ =\frac{(2rv-3d/5)^2}{d}+\frac8{15}dv\ge0,
+\]
+\[
+ (1+r)\frac{36-48r}{25}-\frac{16}{15}
+ =\frac{4(1-3r)(12r+7)}{75}>0
+\]
+give $\K>16/(15(S+m))$ for a nonuniform triple. Together with the uniform
+calculation, this proves the lemma and its equality assertions.
+\end{proof}
+
+\section{Crossing structure of the candidate family}\label{app:crossings}
+Fix $h>0$ and retain the notation of Section~\ref{sec:classification}.
+For real $s\ge0$, $\ell(s)$ and $b_m(s)$ are exponential sums associated
+with fixed finite-support distributions. The following comparisons describe
+their crossings exactly. Their use in classifying the original optimization
+is restricted to integer sample sizes.
+
+\subsection{Two elementary identities}
+\begin{lemma}\label{lem:entropy-series}
+For every discrete probability distribution,
+\begin{equation}\label{eq:entropy-series}
+ H(p)=\sum_{j=1}^\infty\frac{\Phi_j(p)}j,
+\end{equation}
+with equality in $[0,\infty]$. In particular, if two distributions have
+the same finite entropy, the weighted series of the differences of their
+$\Phi_j$ values converges absolutely and sums to zero.
+\end{lemma}
+\begin{proof}
+For $0<u\le1$,
+$-\log u=\sum_{j\ge1}(1-u)^j/j$. Multiplication by $p_i$ and Tonelli's
+theorem prove~\eqref{eq:entropy-series}. Absolute convergence of the
+difference follows by bounding it termwise by the sum of the two
+nonnegative series.
+\end{proof}
+
+\begin{lemma}[Exponential-sum zero counts]\label{lem:zero-count}
+A nonzero sum of $r$ exponentials with distinct positive bases has at most
+$r-1$ real zeros, counted with multiplicity. If
+\[
+ F(s)=Aa^s-Bb^s-Cc^s+Dd^s,
+ \qquad 0<a<b<c<d,\quad A,B,C,D>0,
+\]
+then $F$ has at most two real zeros, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+For the first assertion, divide by one exponential and differentiate.
+The derivative has $r-1$ exponential terms. Induction and Rolle's theorem,
+including repeated zeros, prove the claim.
+
+For the second assertion, put $U(s)=F(s)/b^s$. Then
+\[
+ \frac{U'(s)}{(d/b)^s}
+ =A\log(a/b)(a/d)^s-C\log(c/b)(c/d)^s+D\log(d/b).
+\]
+The right-hand side has strictly positive derivative, so it has at most
+one zero, necessarily simple. Hence $U'$ has at most one zero, counted
+with multiplicity. Rolle's theorem gives at most two for $U$ and $F$.
+\end{proof}
+
+\subsection{Heavy--heavy and light--heavy crossings}
+\begin{theorem}[Heavy--heavy single crossing]\label{thm:heavy-crossing}
+For each pair of integers $k\le i<j$, there is a unique positive crossing
+$\tau_{ij}>1$. It is simple, and
+\begin{equation}\label{eq:heavy-crossing-sign}
+ \begin{cases}
+ b_j(s)<b_i(s),&0<s<\tau_{ij},\\
+ b_j(s)>b_i(s),&s>\tau_{ij}.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equations~\eqref{eq:heavy-m-derivatives} give $z_i<z_j$ and $q_j<q_i$.
+Since $q_i<z_i$, the bases in
+\[
+ b_j(s)-b_i(s)
+ =z_j(1-z_j)^s-z_i(1-z_i)^s
+  -(1-z_i)(1-q_i)^s+(1-z_j)(1-q_j)^s
+\]
+are strictly increasing in the displayed order, and their coefficient
+signs are $+,-,-,+$. Lemma~\ref{lem:zero-count} gives at most two real
+zeros, counting multiplicity. One is $s=0$, since both distributions
+have mass one. The difference is positive for all sufficiently large $s$,
+because $q_j<q_i$. By Lemma~\ref{lem:entropy-series}, it must be negative
+at some positive integer. Hence there is exactly one positive crossing,
+and the zeros at zero and at that crossing are both simple. The sign
+orientation follows, and the negative integer implies $\tau_{ij}>1$.
+\end{proof}
+
+\begin{theorem}[Light--heavy crossings]\label{thm:light-crossing}
+Fix $m\ge k$ such that $p_m^{\rm H}$ is not the binary duplicate of
+$p_{\rm L}$. There are endpoints
+$2<\alpha_m<\beta_m\le\infty$ such that
+\begin{equation}\label{eq:light-crossing-sign}
+ b_m(s)>\ell(s)\quad\Longleftrightarrow\quad
+ \alpha_m<s<\beta_m\qquad(s>0).
+\end{equation}
+More precisely, if $p_{\rm L}$ is uniform or $q_m\le a$, then
+$\beta_m=\infty$ and $\alpha_m$ is the unique positive zero of
+$b_m-\ell$. If $0<a<q_m$, then $\alpha_m$ and $\beta_m$ are its
+exactly two positive zeros. Every finite positive crossing is simple;
+outside the closed interval the inequality in~\eqref{eq:light-crossing-sign}
+is strictly reversed.
+\end{theorem}
+\begin{proof}
+First note the ordering $q_m<y<z_m$. The first inequality follows from
+$q_m<1/(m+1)\le1/(k+1)<y$. To prove $z_m>y$, keep one $y$-atom of
+$p_{\rm L}$ and average its remaining masses over $m$ coordinates, padding
+with zeros if necessary. This strictly increases entropy unless $k=m=1$,
+the excluded binary duplicate. Thus $E_m(y)>h$. Since
+$y>1/(m+1)$ and $E_m$ is strictly decreasing on the heavy branch,
+$z_m>y$ follows. This averaging argument also applies to the uniform
+case $a=0$.
+
+Corollary~\ref{cor:small-samples} gives
+\begin{equation}\label{eq:light-strict-small}
+ b_m(1)<\ell(1),\qquad b_m(2)<\ell(2).
+\end{equation}
+If $a=0$, the difference is a three-term exponential sum with increasing
+bases and signs $+,-,+$. It is positive for large $s$. By
+Lemma~\ref{lem:zero-count}, the zero at $s=0$ and a single simple
+crossing $\alpha_m>2$ exhaust its zeros.
+
+Suppose $a>0$. We have
+\[
+ b_m(s)-\ell(s)
+ =z_m(1-z_m)^s-(1-a)(1-y)^s
+  +(1-z_m)(1-q_m)^s-a(1-a)^s.
+\]
+If $q_m<a$, the increasing-base signs are $+,-,-,+$, and the difference
+is positive for large $s$. The same two-zero bound gives a unique simple
+positive crossing $\alpha_m>2$. If $q_m=a$, the last two terms with
+base $1-a$ combine, with coefficient
+$1-z_m-a=(m-1)a>0$. The strict inequality holds because the only $m=1$
+case is the excluded duplicate. This leaves a three-term sum and gives
+the same conclusion.
+
+Finally, if $a<q_m$, the increasing-base signs are $+,-,+,-$, so there
+are at most three real zeros. One is $s=0$, and the difference is negative
+for large $s$. It is also negative at $s=1,2$ by
+\eqref{eq:light-strict-small}. Since its entropy series sums to zero,
+it must be positive at some integer $j\ge3$. There is therefore one
+crossing between $2$ and $j$, and another after $j$. These, together
+with zero, exhaust the permitted zeros and must all be simple. They give
+exactly the interval and signs stated in the theorem.
+\end{proof}
+
+\subsection{Finite phase intervals}
+The crossing results give an alternative exact description of the finite
+maximum in Theorem~\ref{thm:finite-classification}. Every endpoint below
+is a specified root with a proved crossing orientation.
+
+For a heavy multiplicity $m\ge k$ other than the binary duplicate, put
+\begin{equation}\label{eq:phase-cutoff}
+ T_m=\tau_{m,m+1},\qquad
+ R_m=\max\{m+1,\lceil hT_m+1\rceil\},
+\end{equation}
+and define the finite extrema
+\begin{equation}\label{eq:phase-endpoints}
+ \begin{aligned}
+ \underline{s}_m
+ &=\max\bigl(\{\alpha_m\}\cup
+               \{\tau_{j,m}:k\le j<m\}\bigr),\\
+ \overline{s}_m
+ &=\min\bigl(\{\beta_m\}\cup
+               \{\tau_{m,j}:m<j\le R_m\}\bigr).
+ \end{aligned}
+\end{equation}
+The second set contains $\tau_{m,m+1}$, so its minimum is finite even
+when $\beta_m=\infty$.
+
+\begin{corollary}[Winning intervals]\label{cor:phase-intervals}
+For integer $t\ge1$, the heavy distribution $p_m^{\rm H}$ is globally
+optimal if and only if
+\begin{equation}\label{eq:heavy-phase}
+ \underline{s}_m\le t\le\overline{s}_m.
+\end{equation}
+If the lower endpoint exceeds the upper endpoint, this multiplicity never
+wins. The light or uniform candidate is globally optimal if and only if
+\begin{equation}\label{eq:light-phase}
+ t\notin
+ \bigcup_{\substack{k\le m\le M(t,h)\\p_m^{\rm H}\ne p_{\rm L}}}
+       (\alpha_m,\beta_m),
+\end{equation}
+where equality or inequality of distributions is understood up to
+permutation and zero coordinates. All endpoint ties are included.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:heavy-crossing} gives the lower crossing constraints
+against smaller heavy multiplicities and the upper constraints against
+larger ones. Theorem~\ref{thm:light-crossing} gives the closed interval
+$[\alpha_m,\beta_m]$ for comparison with the baseline.
+
+A candidate with multiplicity $m$ loses to $m+1$ when $t>T_m$. For
+$1\le t\le T_m$, we have $R_m\ge ht+1$, so
+Lemma~\ref{lem:cutoff} implies $b_j(t)<b_{R_m}(t)$ for every $j>R_m$.
+It is therefore enough to compare with the finitely many larger
+multiplicities in~\eqref{eq:phase-endpoints}. This proves
+\eqref{eq:heavy-phase}. The light criterion follows directly from
+Theorem~\ref{thm:finite-classification} and the strict sign intervals
+in~\eqref{eq:light-crossing-sign}.
+\end{proof}
+
+At fixed entropy, heavy winning multiplicities cannot decrease as the
+integer sample size increases. Indeed, if $i<j$ and $b_j(t_1)\ge b_i(t_1)$,
+then $t_1\ge\tau_{ij}$; for every $t_2>t_1$ we have
+$b_j(t_2)>b_i(t_2)$. This assertion concerns comparisons as the sample
+size varies. The heavy sequence in $m$ need not be unimodal at a fixed
+sample size, as Appendix~\ref{app:certificates} shows.
+
+\section{A fixed finite alphabet}\label{app:finite-alphabet}
+Let $B_{t,N}(h)$ denote the maximum when the alphabet has exactly $N$
+available symbols; zero coordinates are permitted. If $N=1$ or $h=0$,
+only point masses can maximize, and the maximum is zero. Suppose now
+that $N\ge2$, $h>0$, and $t\ge1$ is an integer.
+
+Form the saturated candidate list from
+Theorem~\ref{thm:finite-classification}, retaining only distributions
+with at most $N$ positive coordinates. In addition, let $z$ run through
+all roots in $(0,1)$ of
+\begin{equation}\label{eq:finite-stationarity}
+ f_t'(z)=f_t'\!\left(\frac{1-z}{N-1}\right)
+\end{equation}
+for which $E_{N-1}(z)\le h$, and add $p_{N-1}(z)$ to the list. Explicitly,
+\eqref{eq:finite-stationarity} is the polynomial equation
+\begin{equation}\label{eq:finite-polynomial}
+ \begin{aligned}
+ &(N-1)^t(1-z)^{t-1}\bigl(1-(t+1)z\bigr)\\
+ &\qquad-(N-2+z)^{t-1}\bigl((t+1)z+N-t-2\bigr)=0.
+ \end{aligned}
+\end{equation}
+This polynomial is nonzero and has degree at most $t$. The full-support
+uniform law is included as the root $z=1/N$ whenever it is feasible.
+
+\begin{theorem}\label{thm:finite-alphabet}
+The maximum $B_{t,N}(h)$ is the largest objective value in the finite list
+just described. Up to permutation, its maximizing vectors are exactly the
+candidates attaining that value.
+\end{theorem}
+\begin{proof}
+Theorems~\ref{thm:main} and~\ref{thm:exceptional} give the possible
+shapes. If a maximizer has $H(p)=h$, it is an entropy-matched candidate
+whose support fits in $N$. A heavy candidate with multiplicity above
+$M(t,h)$ cannot maximize even on this alphabet: the candidate at
+$M(t,h)$ has smaller support, the same entropy, and a strictly larger
+objective.
+
+If a maximizer has $H(p)<h$, it has full support. Otherwise the
+atom-splitting perturbation in the proof of Theorem~\ref{thm:main} is
+available on an unused coordinate and strictly improves the objective.
+On full support the entropy inequality is locally inactive, so ordinary
+stationarity under normalization gives equality of $f_t'$ at every
+positive size. This is~\eqref{eq:finite-stationarity} for a nonuniform
+one-exceptional vector; a uniform vector satisfies it as well.
+
+Equation~\eqref{eq:finite-polynomial} is obtained by clearing the factor
+$(N-1)^t$. It is not identically zero: the derivative difference in
+\eqref{eq:finite-stationarity}, extended to $z=1$, is $-2$ for $t=1$
+and $-1$ for $t>1$. Thus at most $t$ roots are added. Every listed vector
+is feasible, and the list contains every maximizer; attainment proves
+the theorem.
+\end{proof}
+
+\section{Certified nonmonotonicity examples}\label{app:certificates}
+The finite classification need not reduce to a unimodal search in the
+heavy multiplicity or to a single transition as entropy increases. The
+following strict inequalities are verified by the accompanying
+\texttt{missing\_mass\_extremizers\_certificates.py}, which uses only
+integer and rational arithmetic from the Python standard library.
+
+At $h=19/8$ and $t=8$, the heavy candidates satisfy
+\begin{equation}\label{eq:nonunimodal-example}
+ \begin{aligned}
+ 0.456467562315&<b_{10}(8)<0.456467562316,\\
+ 0.455820123956&<b_{11}(8)<0.455820123957,\\
+ 0.457052010607&<b_{12}(8)<0.457052010608.
+ \end{aligned}
+\end{equation}
+In particular $b_{10}(8)>b_{11}(8)<b_{12}(8)$, so the heavy sequence is
+not unimodal. The cutoff is $M=20$. Comparing the light candidate and all
+heavy candidates $10\le m\le20$ gives the unique winner $m=14$, with
+\[
+ 0.458686581808<B_8(19/8)<0.458686581809.
+\]
+Its heavy atom lies in
+\[
+ \frac{343937132264853115880129584166}{10^{30}}
+ <z_{14}<
+ \frac{343937132264853115880129584167}{10^{30}},
+\]
+and every other positive atom is $(1-z_{14})/14$.
+
+For $t=3$, the type of the unique maximizer changes from one-light to
+one-heavy and back to one-light across the three entropy budgets below.
+In the two numerical columns, each displayed decimal $d$ is a strict
+lower bound and $d+10^{-12}$ is a strict upper bound.
+\begin{center}
+\begin{tabular}{c c c c c}
+\toprule
+$h$ & $\ell(3)$ & $\max_{m\ge k}b_m(3)$ & $M$ & Optimal type\\
+\midrule
+$11/10$ & $0.296480675541$ & $0.294054230107$ & $5$ & One-light\\
+$6/5$   & $0.327755692052$ & $0.333702359978$ & $5$ & One-heavy\\
+$7/5$   & $0.424289708030$ & $0.403758744660$ & $6$ & One-light\\
+\bottomrule
+\end{tabular}
+\end{center}
+In the middle row the winning heavy multiplicity is $m=3$.
+
+For completeness, the certificate method is as follows. The script stores
+a rational bracket $(a,b)$ of width $10^{-30}$ for each entropy root and
+verifies the appropriate entropy signs at its endpoints. Logarithms are
+bounded after reduction to $x=2^j y$, $1\le y<2$, by setting
+$v=(y-1)/(y+1)\in[0,1/3)$ and using
+\begin{equation}\label{eq:log-certificate}
+ 0\le\log y-2\sum_{r=0}^{R-1}\frac{v^{2r+1}}{2r+1}
+ \le\frac{2v^{2R+1}}{(2R+1)(1-v^2)}.
+\end{equation}
+The same formula at $v=1/3$ bounds $\log2$. The script uses $R=40$ and
+reverses the appropriate interval endpoints when multiplying by a
+negative $j$. For $z\in(a,b)$, positivity of the weights and bases gives
+\[
+ \begin{aligned}
+ V_{m,t}(z)&\ge a(1-b)^t
+ +(1-b)\left(1-\frac{1-a}{m}\right)^t,\\
+ V_{m,t}(z)&\le b(1-a)^t
+ +(1-a)\left(1-\frac{1-b}{m}\right)^t.
+ \end{aligned}
+\]
+These are rational bounds for integer $t$. The stored data certify the
+entropy index $k$, the cutoff $M$, every entropy-root bracket, all strict
+objective comparisons, and the completeness of each candidate list.
+
+\section*{AI disclosure}
+GPT 6 Sol and Claude Opus 5 were used for proof discovery, simplification,
+and editorial suggestions. The author is fully responsible for the
+correctness of the arguments.
+
+\begin{thebibliography}{2}
+\bibitem{BK} D.~Berend and A.~Kontorovich,
+\emph{The missing mass problem},
+Statistics \& Probability Letters \textbf{82} (2012), no.~6, 1102--1110.
+\href{https://doi.org/10.1016/j.spl.2012.02.014}{doi:10.1016/j.spl.2012.02.014}.
+
+\bibitem{BKZ} D.~Berend, A.~Kontorovich, and G.~Zagdanski,
+\emph{The expected missing mass under an entropy constraint},
+Entropy \textbf{19} (2017), no.~7, article~315, 13~pp.
+\href{https://doi.org/10.3390/e19070315}{doi:10.3390/e19070315}.
+\end{thebibliography}
+\end{document}
