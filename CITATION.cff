@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the preprint."
+title: "Extremizers of the expected missing mass under an entropy constraint"
+type: article
+authors:
+  - family-names: "Long"
+    given-names: "Christopher D."
+repository-code: "https://github.com/long-mathematics/entropy-constrained-missing-mass"
