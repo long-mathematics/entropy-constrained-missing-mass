@@ -3,6 +3,7 @@
 Research repository for the manuscript by Christopher D. Long.
 
 - [LaTeX source](missing_mass_extremizers.tex)
+- [Compiled PDF](missing_mass_extremizers.pdf)
 - [Exact certificate script](scripts/missing_mass_extremizers_certificates.py)
 
 ## Abstract
@@ -20,6 +21,7 @@ Every optimizer is eventually one-heavy, with \(m_t\sim ht\) equal light atoms o
 ## Repository contents
 
 - `missing_mass_extremizers.tex` — manuscript source.
+- `missing_mass_extremizers.pdf` — compiled manuscript.
 - `scripts/missing_mass_extremizers_certificates.py` — exact rational certificates for the certified examples in the manuscript; Python standard library only.
 - `CITATION.cff` — citation metadata.
 - `AGENTS.md` — repository instructions for manuscript edits and validation.
