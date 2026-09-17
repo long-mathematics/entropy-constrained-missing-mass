@@ -9,7 +9,9 @@ equation cross-checks, and subsidiary obligations are counted separately below.
 ## Completion and milestone record
 
 - The mathematical formalization and independent final audit are complete.
-  Release automation is installed only after this audited milestone.
+  PR #6 merged the audited completion. The subsequent CI milestone installs
+  `.github/workflows/lean-ci.yml` and the required `Build and audit Lean` check;
+  main protection is applied after successful PR and merged-main runs.
 - Pinned Lean: v4.34.0; mathlib: `5ed2965256430c3649e86755f9576b54eca72435`.
 - Final validation: `lake clean entropy_constrained_missing_mass` followed by
   `lake build` passed (3,253 jobs), rebuilding every project module. The axiom
