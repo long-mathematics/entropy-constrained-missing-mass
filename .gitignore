@@ -26,3 +26,7 @@
 *.olean
 *.ilean
 *.trace
+
+# Python verification/generator bytecode
+__pycache__/
+*.pyc
