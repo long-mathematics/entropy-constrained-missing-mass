@@ -68,7 +68,7 @@ alternate proof routes.
 With [elan](https://github.com/leanprover/elan) installed, run:
 
 ```bash
-lake exe cache get
+python3 scripts/fetch_mathlib_cache.py
 lake build
 lake env lean scripts/audit_lean.lean
 python3 scripts/audit_source.py
@@ -96,3 +96,18 @@ Principal entry points include `MainTheorem`, `EntropyCurvature`,
 `PhaseIntervals`, `FiniteAlphabetClassification`, `OccupancyExtrema`, and
 `CertifiedExamples`. The root `EntropyConstrainedMissingMass.lean` imports the
 complete formalization.
+
+## Continuous integration
+
+[Build and audit Lean](.github/workflows/lean-ci.yml) runs on pull requests to
+`main` and pushes to `main`. It installs the pinned compiler, fetches the Mathlib
+cache only for imported dependencies, rebuilds every project proof, audits
+transitive axioms and source/ledger coverage, and runs the exact certificates.
+The workflow has read-only repository permissions and pins its actions by commit.
+The project proofs are built fresh on each run.
+
+The release workflow is a feature branch, a pull request with **Build and audit
+Lean** passing, and a squash merge. The main protection ruleset requires that
+check and pull requests, prohibits force pushes/deletion, and has no owner/admin
+bypass. Human approvals, signed commits, and strict branch freshness are not
+required; ordinary feature branches remain unrestricted.
