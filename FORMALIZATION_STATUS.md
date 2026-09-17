@@ -2,28 +2,41 @@
 
 The entire manuscript (1,350 lines, including all appendices) was read on
 2026-09-16. This is the initial exhaustive inventory, subject to the mandatory
-independent final reread. **Three of 18 named manuscript results are proved in Lean: `lem:entropy-series`, `lem:coefficient-extremum`, and `lem:comparison`.**
+independent final reread. **Five of 18 named manuscript results are proved in Lean: `thm:main`, `lem:entropy`, `lem:entropy-series`, `lem:coefficient-extremum`, and `lem:comparison`.**
 The Python certificates are independent checks, not Lean proofs. Definitions,
 equation cross-checks, and subsidiary obligations are counted separately below.
 
 ## Persistent state and next action
 
-- Baseline: `b8f5da9` (PR #1 squash-merged); work branch: `formalization/compactness-and-analytic-dependencies`.
+- Baseline: `4ab94ca` (PR #2 squash-merged); work branch: `formalization/entropy-curvature-and-local-variations`.
 - Pinned Lean: v4.34.0; mathlib: `5ed2965256430c3649e86755f9576b54eca72435`.
-- Current frontier: actual entropy Hessian/level curves, sharp curvature mixtures,
-  and repeated-size finite perturbations. The finite coefficient comparison, attainment, the
-  smooth three-root inverse, coefficient extremum, and the sharp kernel estimate
-  are checked. No finite-support assumption was used for attainment.
-- Current milestone validation: full `lake build` passed (2,898 jobs); namespace
+- Current frontier: one-exceptional-atom representation and the general repeated-size
+  criterion, then finite candidate completeness/cutoff. The complete main theorem
+  and sharp entropy-curvature lemma (both equality cases) now kernel-check.
+  No finite-support assumption was used for the local structural theorem or attainment.
+- Merged PR #2 validation: full `lake build` passed (2,898 jobs); namespace
   axiom audit checked 685 declarations (601 theorem constants including generated
   auxiliaries), all using only the three permitted standard axioms. Lexical audit
   of all 36 milestone Lean files found no holes/custom axioms. Exact Python
   certificates passed; ledger has 150 nodes, no missing dependency or cycle.
   No manuscript or PDF changes in this milestone.
-- Next concrete proof units: EntropyHessian (actual level-curve Hessian),
-  SimplexIntegrals/SimplexCurvature (tilted simplex law), and RepeatedSize
-  (actual local-maximizer variations). These files are exploratory until their
-  bounded units are checked and included by the root module.
+- Current checked additions: full `ProbabilityVector.main_theorem`, actual entropy level curve and both derivative identities,
+  exact objective second derivative, feasible finite perturbations/one-sided variation,
+  actual simplex and reciprocal-square tilted probability laws, all moments and
+  nondegeneracy, sharp curvature and equality characterizations. The main local
+  structure and saturation results are stronger: they cover arbitrary/infinite
+  alphabets respectively, while attainment covers all nonempty countable alphabets.
+- Current milestone validation: full `lake build` passed (2,928 jobs); root
+  namespace audit checked 1,053 declarations (939 theorem constants including
+  generated auxiliaries), all using only propext, Classical.choice and Quot.sound.
+  Lexical audit of all 58 Lean files in the root import closure found no holes or
+  custom axioms. Exact Python certificates passed. All 150 ledger nodes have
+  valid acyclic dependencies; all 18 named source labels are represented.
+  Complete milestone changes reviewed; no manuscript/PDF edits in this milestone.
+- Next concrete proof units: RepeatedFourVariation (general scalar-objective
+  wrapper), ExceptionalForm (checked actual candidate representation, pending
+  next milestone import), UniformForm/CandidateCompleteness, and HeavyInterpolation.
+  Their active files are deliberately outside the current main-theorem milestone.
 - No production CI or protection should be installed before the complete final audit.
 - Editorial change only: GPT 6 Sol → GPT-6 Astra; no mathematical TeX changes.
 - Previous milestone validation: `lake build` passed (2,273 jobs); `lake env lean scripts/audit_lean.lean`
@@ -58,7 +71,7 @@ correspondence, not a numerical test or a theorem conditional on the result.
 
 ## Coverage and dependency graph
 
-Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 36 PROVED, 13 IN PROGRESS, 101 TODO, 0 BLOCKED. Named results proved: 3/18.
+Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 62 PROVED, 7 IN PROGRESS, 81 TODO, 0 BLOCKED. Named results proved: 5/18.
 
 The `Dependencies` fields are the adjacency-list dependency graph (arrows from
 an obligation to prerequisites); it was checked for missing nodes and cycles.
@@ -128,10 +141,10 @@ For 0<x<y<z and fixed S=x+y+z, (E,P) are smooth local coordinates; sufficiently 
 ### `integral_convergence`
 
 - Source: §2; unnamed supporting assertion.
-- Lean correspondence: `Curvature.integrableOn_I0, integrableOn_I1, integrableOn_curvature_numerator, I0_pos, I1_pos`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `Curvature.integrableOn_I0, integrableOn_I1, integrableOn_curvature_numerator, I0_pos, I1_pos; TripleGeometry.integrableOn_div_D_sq`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: I0,I1 and every centered curvature numerator are checked. Individual Hessian integrals and their differentiation remain in progress.
+- Reformulation/equivalence/alternate proof: All I0/I1/curvature and three Hessian integrands converge for every positive triple. Squared-degree Hessian is the curvature numerator centered at zero.
 
 For every positive triple, I₀,I₁ and all integrals defining entropy Hessians and K converge; I₀>0 and I₁>0.
 
@@ -158,60 +171,60 @@ For distinct positive roots, ∑1/((s+u)W′(u))=1/D(s) and ∑u/((s+u)W′(u))=
 ### `entropy_hessian`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.entropy_hessian`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.hasDerivAt_localEntropy_E, hasDerivAt_localEntropy_P, hasDerivAt_partialEntropy_EE, hasDerivAt_partialEntropy_EP, hasDerivAt_partialEntropy_PE, hasDerivAt_partialEntropy_PP`.
+- Status: **PROVED**.
 - Dependencies: `root_coordinates`, `integral_convergence`, `log_integral`, `root_partial_fractions`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual derivatives of localEntropy built from the smooth local roots. Reciprocal-integral differentiation has a uniform integrable majorant; neighboring inverse charts are proved compatible.
 
 At distinct positive roots, H_E=I₁, H_P=I₀, H_EE=-∫s²/D², H_EP=-∫s/D², H_PP=-∫1/D²; justify differentiation under each integral.
 
 ### `entropy_curve`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.entropy_curve`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.entropyCurve, eventually_entropyCurve_entropy, eventually_entropyCurve_derivatives, hasDerivAt_entropyCurve_m, hasDerivAt_deriv_entropyCurve_product`.
+- Status: **PROVED**.
 - Dependencies: `entropy_hessian`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: A genuine analytic implicit function with E=E₀+r and fixed S gives the local root path. Entropy is constant nearby, P′=−m holds throughout a neighborhood, and the Hessian/quotient calculation yields m′=−K and P″=K with the original normalization.
 
 The local entropy level is a smooth curve P(E), with P′=-m and P″=K.
 
 ### `triple_necessary`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.triple_necessary`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.objective_stationary_of_localMax, objective_curvature_nonpos_of_localMax, objective_P_nonneg_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `local_topology`, `entropy_curve`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: All three necessary conditions are derived from genuine ℓ¹ local maximality through embedded actual paths. Finite support and entropy saturation are not assumed; slack entropy is included.
 
 A local maximizer containing three distinct positive coordinates has D_t=0, C_t≤0 and (F_t)_P≥0, including when the entropy constraint is slack.
 
 ### `objective_calculus`
 
 - Source: §2 and §5.1; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.objective_calculus`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `deriv_missingMassTerm, deriv2_missingMassTerm, existsUnique_second_derivative_zero, not_three_equal_objective_derivatives`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Checked progress and remaining work: ObjectiveCalculus proves continuity and the exact first/second derivatives, including global endpoint formulas. The one-root/Rolle argument remains TODO.
+- Reformulation/equivalence/alternate proof: Exact polynomial derivatives, the unique interior zero of f″ for t≥2, and the two-Rolle contradiction are checked, including t=1 endpoint formulas.
 
 For integer t≥1, f_t is polynomial and f′_t(u)=(t+1)(1-u)^t-t(1-u)^(t-1). For t>1 and 0<u<1, f″_t(u)=t(1-u)^(t-2)((t+1)u-2), with just one zero in (0,1).
 
 ### `positive_R`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.positive_R`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.objective_P_pos_of_stationary`.
+- Status: **PROVED**.
 - Dependencies: `triple_necessary`, `objective_calculus`, `root_coordinates`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual divided differences express root-coordinate derivatives; nonnegative product derivative and stationarity imply positivity by equality of the three f′ values and Rolle. This entry is the stated conditional algebraic step; the separate triple_necessary entry supplies stationarity from local maximality.
 
 For t>1 at a stationary triple with (F_t)_P≥0, R_t=(F_t)_P>0: otherwise equality of three first derivatives contradicts Rolle and the one-zero property.
 
 ### `t_one_triple`
 
 - Source: §2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.t_one_triple`.
-- Status: **TODO**.
+- Lean correspondence: `triple_objective_one, hasDerivAt_objective_one_path, not_localMax_three_sizes_one`.
+- Status: **PROVED**.
 - Dependencies: `triple_necessary`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The affine-in-E identity and actual entropy-path derivative 2 contradict Fermat stationarity. The generic two-size extraction also gives finite support and saturation at t=1.
 
 F₁=S-S²+2E and its entropy-curve first derivative is 2, excluding three sizes at t=1.
 
@@ -278,50 +291,50 @@ Under the comparison hypotheses, J=∑_{j=0}^{n-1}a_jB_(n-1-j)≤C k_(n-1)<C k_n
 ### `divided_differences`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.divided_differences`.
-- Status: **TODO**.
+- Lean correspondence: `secondDifference_constant, secondDifference_shifted_linear, secondDifference_shifted_pow, hasDerivAt_localObjective_P, hasDerivAt_objective_path`.
+- Status: **PROVED**.
 - Dependencies: `homogeneous`, `root_coordinates`, `objective_calculus`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact polynomial divided differences include degrees zero and one; actual first derivatives of the inverse-root map and of any fixed-S path with E′=1,P′=−m yield R and D.
 
 The second divided difference of (1-u)^j at x,y,z is h_(j-2)(1-x,1-y,1-z), including j=0,1. Therefore R_t=(t+1)k_n and D_t=(t+1)(k_(n+1)-βk_n).
 
 ### `objective_curvature`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.objective_curvature`.
-- Status: **TODO**.
+- Lean correspondence: `hasCoeffDerivAt_complementarySeries, hasDerivAt_stationarityCoefficient, hasDerivAt_deriv_objective_entropyCurve`.
+- Status: **PROVED**.
 - Dependencies: `divided_differences`, `entropy_curve`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The exact actual second derivative of the constructed entropy curve is (n+3)(K k_n−J). Power-series coefficient differentiation is proved coefficientwise, including n=0 and β′=−K. This proves the needed curvature directly; the separate labelled general partial-Hessian chain-rule display remains to be cross-checked.
 
 For t≥2,n=t-2,α=t/(t+1),β=1+m,q=(1-x,1-y,1-z), the entropy-curve second derivative is C_t=(t+1)(K k_n-J). The variation β′=-K must be included.
 
 ### `curvature_contradiction`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.curvature_contradiction`.
-- Status: **TODO**.
+- Lean correspondence: `coefficient_curvature_ratio_gap, coefficient_curvature_twentieth_gap, not_localMax_three_sizes_of_curvature_bound`.
+- Status: **PROVED**.
 - Dependencies: `lem:comparison`, `lem:entropy`, `objective_curvature`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Both strict quantitative bounds are checked with actual source coefficients. The full local contradiction composes them with exact objective variations and the proved sharp analytic bound in MainTheorem.
 
 For S≤1, D_t=0 and R_t>0 imply C_t/R_t>1/(15(S+m)) and C_t>R_t/(20S)>0.
 
 ### `two_sizes`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.two_sizes`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.two_sizes_of_localMax, TripleGeometry.not_localMax_three_sizes`.
+- Status: **PROVED**.
 - Dependencies: `curvature_contradiction`, `positive_R`, `t_one_triple`, `local_topology`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Ordered embedded triples are excluded by the actual entropy path. Exhaustive total-order cases extract two positive sizes (allowed to coincide). Holds for arbitrary index types, hence finite/countable alphabets.
 
 Every ℓ¹-local maximum on every finite or countable alphabet has at most two positive coordinate values, by feasible three-coordinate perturbations.
 
 ### `finite_support`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.finite_support`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `ProbabilityVector.finite_support_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `probability`, `two_sizes`.
-- Checked progress and remaining work: Support.finite_support_of_finite_sizes and finite_support_of_two_sizes prove the support implication, but the premise for local maximizers is not yet proved.
+- Reformulation/equivalence/alternate proof: Derived from the now-proved two-size conclusion and finiteness of each positive-mass fiber; no finite-support premise.
 
 A probability vector with at most two distinct positive coordinate values has finite support, since each positive value can occur only finitely many times.
 
@@ -358,12 +371,12 @@ Entropy is lower semicontinuous under coordinatewise convergence of probability 
 ### `objective_lipschitz`
 
 - Source: §4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.objective_lipschitz`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `exists_attained_objective_lipschitz_constant, ProbabilityVector.objective_dist_le_derivativeMax`.
+- Status: **PROVED**.
 - Dependencies: `objective`, `objective_calculus`, `local_topology`.
-- Checked progress and remaining work: ObjectiveContinuity proves objective_dist_le and continuous_objective with explicit constant t+1 by an algebraic power estimate. This replaces derivative-maximization for continuity; the displayed optimal derivative-bound form itself is not yet checked.
+- Reformulation/equivalence/alternate proof: The absolute derivative attains its finite maximum on [0,1]; the scalar mean-value bound and actual countable ℓ¹ objective estimate use exactly this constant. The prior explicit t+1 bound is also retained.
 
-For integer t≥1, |Φ_t(p)-Φ_t(q)|≤L_t‖p-q‖₁, where L_t=max_[0,1]|f′_t|<∞.
+For t≥1, L_t=max_{0≤u≤1}|f_t′(u)| is finite, and |Φ_t(p)−Φ_t(q)|≤L_t‖p−q‖₁ on every finite/countable alphabet.
 
 ### `attainment`
 
@@ -388,10 +401,10 @@ For 0<ε<a≤1, splitting a into a-ε,ε changes ℓ¹ distance by 2ε, raises e
 ### `entropy_saturation`
 
 - Source: §4; unnamed supporting assertion.
-- Lean correspondence: `ProbabilityVector.entropy_saturation_of_zero_coord, entropy_saturation_of_finite_support`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `ProbabilityVector.entropy_saturation_of_localMax, entropy_toReal_saturation_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `finite_support`, `atom_splitting`.
-- Reformulation/equivalence/alternate proof: Actual local maximality plus an unused coordinate or explicit finite support yields saturation. Finite support for every local maximizer is still outstanding, so the unconditional claim remains open.
+- Reformulation/equivalence/alternate proof: The structural finite-support theorem supplies an unused atom on every infinite alphabet; the checked atom-splitting improvement forces equality. Extended and real entropy forms are both supplied.
 
 Every countably infinite alphabet local maximizer has H=h: use finite support and split into an unused coordinate if H<h.
 
@@ -678,40 +691,40 @@ For any probability law λ with compact positive support, mλ=EλV and G=Eλκ_V
 ### `simplex_mixture`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.simplex_mixture`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.simplexLaw_mean, simplexLaw_inverse_cube, simplexLaw_inverse_square, simplexLaw_inverse, simplexLaw_not_ae_constant`.
+- Status: **PROVED**.
 - Dependencies: `integral_convergence`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Concrete barycentric uniform-simplex measure has the exact first/second moments and reciprocal-cube identity. Dominated Fubini yields inverse moments. Explicit variance rules out almost-sure constancy for nonuniform triples.
 
 For uniform simplex U and V=xU₁+yU₂+zU₃, EV=S/3 and E(s+V)^(-3)=1/D(s). Thus I₀=EV^(-2)/2 and I₁=EV^(-1)/2. Nonuniform x,y,z imply V is not almost surely constant.
 
 ### `tilted_moments`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.tilted_moments`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.tiltedSimplexLaw_probability, tiltedSimplexLaw_mean, tiltedSimplexLaw_second_moment, tiltedSimplexLaw_third_moment, tiltedSimplexLaw_density, tiltedSimplexLaw_weighted_variance_pos, m_lt_mean_of_nonuniform`.
+- Status: **PROVED**.
 - Dependencies: `simplex_mixture`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The reciprocal-square withDensity law is genuinely a probability measure. Exact density and three moments are checked; equivalence of null sets and raw variance establish strictness for every nonuniform triple.
 
 Under dλ=v^(-2)dP_V/(2I₀), G=1/(I₀D), EλV=m, b₂=EλV²=1/(2I₀), EλV³=(S/3)b₂. Hence Eλ[(V-m)²(V+m)]=(S/3-m)b₂>0 for nonuniform triples, proving 0<m<S/3.
 
 ### `mixture_cauchy`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.mixture_cauchy`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.mixture_dispersion_lower_of_third_moment, tiltedSimplexLaw_curvature, curvature_lower_of_nonuniform`.
+- Status: **PROVED**.
 - Dependencies: `mixture_bound`, `tilted_moments`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Integrated nonnegative-square proof supplies the Cauchy bound without square-root machinery. Applying it to the actual tilt yields precisely the manuscript K lower bound, including all integrability requirements.
 
 Cauchy–Schwarz gives Eλ[(V-m)²/(V+m)]≥(b₂-m²)²/((S/3-m)b₂), hence K≥(8/15)I₁+(1-2mI₁)²/(S-3m).
 
 ### `curvature_algebra`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.curvature_algebra`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `Curvature.sum_mul_I1_ge, entropy_curvature_strict, m_eq_mean_iff, entropy_curvature_eq_iff`.
+- Status: **PROVED**.
 - Dependencies: `mixture_cauchy`, `uniform_curvature`.
-- Checked progress and remaining work: CurvatureAlgebra proves both final square identities and entropy_curvature_strict_of_lower_bound; AM–GM/integral lower bound remains TODO. This does not establish lem:entropy.
+- Reformulation/equivalence/alternate proof: AM–GM gives S I1≥3/2; the exact two algebraic square identities imply strict curvature for nonuniform triples. Uniform evaluation gives both equality characterizations.
 
 AM–GM gives j=SI₁≥3/2. For r=m/S∈(0,1/3), d=1-3r,v=j-3/2≥0, the two displayed square identities imply K>16/(15(S+m)); strictness and uniform_curvature give both iff equality clauses.
 
@@ -898,10 +911,10 @@ At t=3 and h=11/10,6/5,7/5 the unique winning types are respectively light,heavy
 ### `thm:main`
 
 - Source: Introduction; TeX label: `thm:main`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.thm_main`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.main_theorem`.
+- Status: **PROVED**.
 - Dependencies: `two_sizes`, `finite_support`, `attainment`, `entropy_saturation`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: One theorem combines all local structural, global attainment and infinite-alphabet saturation clauses for nonempty Countable alphabets, t≥1 and h≥0. The local structural and saturation components are stronger in alphabet generality. The true ℓ¹ feasible topology and ENNReal/real entropy bridge are retained.
 
 Exact manuscript statement/display:
 
@@ -915,10 +928,10 @@ countably infinite, every local maximizer satisfies $H(p)=h$.
 ### `lem:entropy`
 
 - Source: The three-coordinate reduction; TeX label: `lem:entropy`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.lem_entropy`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.entropy_curvature`.
+- Status: **PROVED**.
 - Dependencies: `curvature_algebra`, `uniform_curvature`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual convergent source integrals for every positive triple, including repeated coordinates. Both iff equality clauses are proved. The simplex law is constructed as a barycentric pushforward of the weighted unit square; all tilt/Fubini/moment identities are checked.
 
 Exact manuscript statement/display:
 
@@ -1288,10 +1301,10 @@ candidates attaining that value.
 ### `eq:entropy-derivatives`
 
 - Source: The three-coordinate reduction; TeX label: `eq:entropy-derivatives`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_entropy_derivatives`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.hasDerivAt_localEntropy_E, hasDerivAt_localEntropy_P`.
+- Status: **PROVED**.
 - Dependencies: `entropy_hessian`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact directional partial derivatives at fixed S in the actual inverse-root chart.
 
 Exact manuscript statement/display:
 
@@ -1302,10 +1315,10 @@ Exact manuscript statement/display:
 ### `eq:curve`
 
 - Source: The three-coordinate reduction; TeX label: `eq:curve`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_curve`.
-- Status: **TODO**.
+- Lean correspondence: `hasDerivAt_P_of_entropy_path, hasDerivAt_deriv_entropyCurve_product`.
+- Status: **PROVED**.
 - Dependencies: `entropy_curve`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact displayed quantities are linked to the source definitions and actual curve derivatives in the owning proof units; strict inequalities and degree-zero boundary are preserved.
 
 Exact manuscript statement/display:
 
@@ -1316,10 +1329,10 @@ P'=-m,\qquad P''=\K.
 ### `eq:entropy-bound`
 
 - Source: The three-coordinate reduction; TeX label: `eq:entropy-bound`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_entropy_bound`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.entropy_curvature`.
+- Status: **PROVED**.
 - Dependencies: `lem:entropy`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact displayed quantities are linked to the source definitions and actual curve derivatives in the owning proof units; strict inequalities and degree-zero boundary are preserved.
 
 Exact manuscript statement/display:
 
@@ -1348,10 +1361,10 @@ Exact manuscript statement/display:
 ### `eq:target`
 
 - Source: The three-coordinate reduction; TeX label: `eq:target`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_target`.
-- Status: **TODO**.
+- Lean correspondence: `not_localMax_three_sizes_of_curvature_bound, coefficient_curvature_gap`.
+- Status: **PROVED**.
 - Dependencies: `curvature_contradiction`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact displayed quantities are linked to the source definitions and actual curve derivatives in the owning proof units; strict inequalities and degree-zero boundary are preserved.
 
 Exact manuscript statement/display:
 
@@ -1410,10 +1423,10 @@ Exact manuscript statement/display:
 ### `eq:derivatives`
 
 - Source: Completion of the two-size proof; TeX label: `eq:derivatives`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_derivatives`.
-- Status: **TODO**.
+- Lean correspondence: `hasDerivAt_localObjective_P, hasDerivAt_objective_path, hasDerivAt_deriv_objective_entropyCurve`.
+- Status: **PROVED**.
 - Dependencies: `objective_curvature`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact displayed quantities are linked to the source definitions and actual curve derivatives in the owning proof units; strict inequalities and degree-zero boundary are preserved.
 
 Exact manuscript statement/display:
 
@@ -1428,10 +1441,10 @@ Exact manuscript statement/display:
 ### `eq:positive-curvature`
 
 - Source: Completion of the two-size proof; TeX label: `eq:positive-curvature`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_positive_curvature`.
-- Status: **TODO**.
+- Lean correspondence: `coefficient_curvature_ratio_gap, coefficient_curvature_twentieth_gap`.
+- Status: **PROVED**.
 - Dependencies: `curvature_contradiction`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact displayed quantities are linked to the source definitions and actual curve derivatives in the owning proof units; strict inequalities and degree-zero boundary are preserved.
 
 Exact manuscript statement/display:
 

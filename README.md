@@ -73,11 +73,14 @@ python3 scripts/missing_mass_extremizers_certificates.py
 `lean-toolchain`, `lakefile.toml`, and `lake-manifest.json` pin the compiler and
 dependencies. `.lake/` and compiled Lean artifacts are not version controlled.
 
-The modules prove the entropy-series lemma, the coefficient-extremum lemma,
-and the finite coefficient comparison. Supporting results include unrestricted
-finite/countable attainment, compactness of sorted entropy sublevels, actual
-ℓ¹ finite perturbations and atom splitting, smooth three-root coordinates,
-entropy-root calculus, and the sharp kernel and probability-mixture estimates.
-The main optimizer classification, full entropy-curvature estimate, asymptotics,
-and crossing results remain unfinished. Production CI and main protection will
-be installed only after the complete correspondence audit passes.
+The modules prove the main two-size/local-maximizer theorem, finite support,
+attainment, infinite-alphabet entropy saturation, and the sharp entropy-curvature
+lemma with both equality characterizations. They also prove the entropy-series,
+coefficient-extremum, and finite coefficient-comparison lemmas. The proofs use
+actual ℓ¹ feasible perturbations, smooth entropy level curves, and a constructed
+tilted simplex probability law; finite support is a conclusion.
+
+The one-exceptional-atom and complete candidate classifications, asymptotics,
+crossing results, and remaining appendix obligations are still in progress.
+Production CI and main protection will be installed only after the complete
+correspondence audit passes.
