@@ -1,18 +1,25 @@
-# Formalization status — IN PROGRESS
+# Formalization status — COMPLETE
 
 The entire manuscript (1,350 lines, including all appendices) was read on
-2026-09-16. This is the initial exhaustive inventory, subject to the mandatory
-independent final reread. **16 of 18 named manuscript results are proved in Lean.** The checked names are `thm:main`, `lem:entropy`, `lem:coefficient-extremum`, `lem:comparison`, `lem:repeated`, `thm:exceptional`, `lem:cutoff`, `thm:finite-classification`, `cor:small-samples`, `thm:asymptotics`, `lem:entropy-series`, `lem:zero-count`, `thm:heavy-crossing`, `thm:light-crossing`, `thm:finite-alphabet`, `cor:occupancy`.
+2026-09-16 and independently reread in full during the final adversarial audit.
+The completed correspondence audit is recorded in [FORMALIZATION_AUDIT.md](FORMALIZATION_AUDIT.md). **18 of 18 named manuscript results are proved in Lean.** The checked names are `thm:main`, `lem:entropy`, `lem:coefficient-extremum`, `lem:comparison`, `lem:repeated`, `thm:exceptional`, `lem:cutoff`, `thm:finite-classification`, `cor:small-samples`, `thm:asymptotics`, `lem:entropy-series`, `lem:zero-count`, `thm:heavy-crossing`, `thm:light-crossing`, `thm:finite-alphabet`, `cor:occupancy`, `cor:phase-intervals`, `cor:sample-complexity`.
 The Python certificates are independent checks, not Lean proofs. Definitions,
 equation cross-checks, and subsidiary obligations are counted separately below.
 
-## Persistent state and next action
+## Completion and milestone record
 
-- Baseline: `7db0e78` (PR #4 squash-merged); work branch: `formalization/asymptotics-crossings-and-appendices`.
+- The mathematical formalization and independent final audit are complete.
+  Release automation is installed only after this audited milestone.
 - Pinned Lean: v4.34.0; mathlib: `5ed2965256430c3649e86755f9576b54eca72435`.
-- Current frontier: sample-complexity inversion and finite phase-interval reduction. Sixteen named results now kernel-check;
-  eleven are merged in main. All numerical certificates are now actual Lean
-  proofs, including the exact root brackets and optimizer uniqueness.
+- Final validation: `lake clean entropy_constrained_missing_mass` followed by
+  `lake build` passed (3,253 jobs), rebuilding every project module. The axiom
+  audit checked 2,133 declarations (1,912 theorem constants), allowing only
+  propext, Classical.choice and Quot.sound. Source audit checked 113 owned Lean
+  files, 112 modules in the root import closure, and all 152 ledger entries.
+  All 18 named results are covered; dependencies are valid and acyclic.
+  Exact Python certificates passed. A forced LaTeX rebuild produced the tracked
+  19-page PDF with no undefined references or citations. No mathematical
+  manuscript changes or repairs were needed.
 - Merged PR #2 validation: full `lake build` passed (2,898 jobs); namespace
   axiom audit checked 685 declarations (601 theorem constants including generated
   auxiliaries), all using only the three permitted standard axioms. Lexical audit
@@ -32,10 +39,11 @@ equation cross-checks, and subsidiary obligations are counted separately below.
   custom axioms. Exact Python certificates passed. All 150 ledger nodes have
   valid acyclic dependencies; all 18 named source labels are represented.
   Complete milestone changes reviewed; no manuscript/PDF edits in this milestone.
-- Next concrete proof units: SampleComplexity, PhaseIntervals, and the literal objective Hessian chain-rule display. The
-  complete fixed-entropy asymptotic theorem, both crossing theorems, finite-
-  alphabet classification, and certified examples are integrated for the next
-  combined audit. An independent final manuscript reread is underway.
+- Independent final reviews compared hypotheses, conclusions, equality cases,
+  local/global scope, finite/countable alphabets, all asymptotic quantifiers,
+  crossings, finite candidates and numerical examples. Literal Hessian,
+  coefficient boundary/ratio, optimizer error, finite-realization and singleton-
+  estimator wrappers close the supplementary correspondence obligations.
 - Merged PR #4 validation: full `lake build` passed (2,946 jobs). The
   root namespace axiom audit checked 1,323 declarations (1,173 theorem constants,
   including generated auxiliaries), all using only the three permitted standard
@@ -43,7 +51,7 @@ equation cross-checks, and subsidiary obligations are counted separately below.
   custom axioms. All 150 ledger entries have valid acyclic dependencies. Exact
   Python certificates passed. The complete new proof units and correspondence
   were reviewed; no manuscript or PDF changes.
-- Current milestone validation: full `lake build` passed (3,241 jobs); namespace
+- Merged PR #5 validation: full `lake build` passed (3,241 jobs); namespace
   audit checked 1,932 declarations (1,740 theorem constants), all using only
   propext, Classical.choice and Quot.sound. All 103 Lean files in the root
   import closure passed the hole/custom-axiom scan. All 150 ledger nodes have
@@ -59,12 +67,10 @@ equation cross-checks, and subsidiary obligations are counted separately below.
   Source audit found no placeholders/custom axioms. All 18 named source labels
   appear in the ledger. Exact Python certificates passed. LaTeX compiled after
   the editorial change, with no undefined references or citations.
-- Independent mathematical investigation checked all Appendix A identities and
-  found no blocker. This is not a Lean proof of those analytic identities.
 - Failed approaches: a blanket `import Mathlib` triggered unnecessary compilation;
   replaced with targeted imports. Lean v4.34 uses `Summable.of_nonneg_of_le`,
   `abs_add_le`, and `push Not`; use the installed API, not remembered older names.
-  Blockers: none confirmed yet.
+  Remaining mathematical obligations or blockers: none.
 
 ## Representation and equivalence policy
 
@@ -77,15 +83,13 @@ No support finiteness is assumed. Finite support may only be exploited after
 `finite_support`. Later finite vectors require a zero-extension equivalence.
 Asymptotic errors must be uniform over optimizers, at fixed positive h.
 
-For each TODO entry below, its intended declaration is a planning name, **not an
-existing theorem**. Unless recorded otherwise: no reformulation has yet been
-implemented, equivalence proof is pending with its representation, and no
-alternate proof has yet been used. PROVED requires an actual kernel-checked
-correspondence, not a numerical test or a theorem conditional on the result.
+Every PROVED entry identifies a kernel-checked correspondence. Alternate proof
+routes and unused manuscript calculations are explicitly distinguished below;
+no numerical test or theorem conditional on the desired result counts as proof.
 
 ## Coverage and dependency graph
 
-Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 134 PROVED, 3 IN PROGRESS, 13 TODO, 0 BLOCKED. Named results proved: 16/18.
+Tracked entries: **152** = 18 named results + 49 labelled equation cross-checks + 85 supporting obligations. Statuses: 152 PROVED, 0 IN PROGRESS, 0 TODO, 0 BLOCKED. Named results proved: 18/18.
 
 The `Dependencies` fields are the adjacency-list dependency graph (arrows from
 an obligation to prerequisites); it was checked for missing nodes and cycles.
@@ -265,30 +269,30 @@ For all nonnegative triples and integers j≥0, h_j²-h_(j-1)h_(j+1)=h_j(r₁r�
 ### `coefficient_transfer`
 
 - Source: §3; unnamed supporting assertion.
-- Lean correspondence: `coefficientDifference_pos_of_le, coefficientDifference_le_of_pair_product, coefficient_extremum`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `coefficientDifference_pos_of_le, coefficientDifference_le_of_pair_product, coefficientDifference_sigma_lt_two, coefficient_extremum`.
+- Status: **PROVED**.
 - Dependencies: `turan`.
-- Reformulation/equivalence/alternate proof: Discrete recurrence comparison proves nondecrease under pair concentration and two explicit transfers prove the full bound. The original derivative identity and sigma exclusion are not yet individually checked.
+- Reformulation/equivalence/alternate proof: A discrete recurrence proves nondecrease under pair concentration, positivity of earlier coefficients, and the full bound via two explicit transfers. Sigma<2 is now checked with the required positive-index hypothesis. The source differential transfer calculation is replaced by the stronger checked discrete comparison, and is not claimed as a separately checked derivative identity.
 
-If b_N=h_N-h_(N-1)>0, all earlier b_j are positive, σ<2, and transferring mass from a smaller interior coordinate to a larger one preserves positivity and does not decrease b_N; at most two transfers reach a vertex of the fixed-sum cube slice. Include N=0,1, r=0 and σ=1,2 boundaries.
+If b_N=h_N-h_(N-1)>0, all earlier b_j are positive; when N≥1, σ<2. Transferring mass from a smaller interior coordinate to a larger one preserves positivity and does not decrease b_N; at most two transfers reach a vertex of the fixed-sum cube slice. Include N=0,1, r=0 and σ=1,2 boundaries.
 
 ### `coefficient_boundary`
 
 - Source: §3; unnamed supporting assertion.
-- Lean correspondence: `coefficientDifference_two_ones, homogeneous2_one_geometric_identity, coefficientDifference_two_ones_le, coefficientDifference_zero_last_le_one`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `coefficientDifference_one_zero, coefficientDifference_two_ones_sum, coefficientDifference_two_ones_le, coefficientDifference_zero_last_le_one, coefficient_extremum`.
+- Status: **PROVED**.
 - Dependencies: `homogeneous`.
-- Reformulation/equivalence/alternate proof: Boundary bounds used by the full theorem are checked including sigma=1. Explicit one-one-zero power identity and all stated boundary classification assertions still need wrappers.
+- Reformulation/equivalence/alternate proof: Literal boundary powers and finite geometric sums, their bounds, and all degree-zero/sigma=1 boundary cases are checked. The full fixed-sum reduction is given by the discrete coefficient-extremum proof.
 
 At fixed σ∈(0,2), boundary representatives are (1,1,1-σ) for σ≤1 and (1,2-σ,0) for σ≥1. Coefficients b_N are respectively ∑_{k=0}^N(1-σ)^k≤1/σ and (2-σ)^N≤1.
 
 ### `comparison_ratios`
 
 - Source: §3; unnamed supporting assertion.
-- Lean correspondence: `weightedCoefficient_pos_of_comparison, weightedCoefficient_pos_of_le, weightedCoefficient_middle_strict_concavity, weightedCoefficient_strict_log_concave, comparisonAuxCoefficient_pos_of_le`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `weightedCoefficient_pos_of_comparison, weightedCoefficient_pos_of_le, weightedCoefficient_strict_log_concave, weightedCoefficient_ratio_strict, comparisonAuxCoefficient_pos_of_le`.
+- Status: **PROVED**.
 - Dependencies: `turan`.
-- Reformulation/equivalence/alternate proof: Positivity through n+1, strict Turan cross-product inequality and all a_j positivity are checked. Discrete middle concavity replaces exponential interpolation. Explicit ratio and interpolation assertion wrappers remain to be recorded.
+- Reformulation/equivalence/alternate proof: Positivity and the explicit strict adjacent-ratio inequalities are checked. Direct discrete log-concavity replaces the source continuous exponential interpolation; the unused interpolation derivatives are not claimed as checked.
 
 Under lem:comparison hypotheses with n≥1, all B_j=h_j-βh_(j-1) are positive through n+1 and B_j/B_(j-1) strictly decrease there, by the strictly concave exponential interpolation g. Hence a_j=B_j-αB_(j-1)>0 for 0≤j≤n.
 
@@ -634,10 +638,10 @@ At fixed h>0, B_t strictly decreases for positive integer t and tends to zero. T
 ### `asymptotic_inversion`
 
 - Source: §6; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.asymptotic_inversion`.
-- Status: **TODO**.
+- Lean correspondence: `tendsto_optimalValue_zero, tendsto_sampleComplexity_atTop, tendsto_sampleInverseScale_reciprocal, tendsto_inverseScale_at_sampleComplexity, sampleComplexity_asymptotic`.
+- Status: **PROVED**.
 - Dependencies: `strict_B_monotone`, `thm:asymptotics`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: An alternate exact adjacent-threshold squeeze replaces rounding two explicit exponentials. Minimality brackets h/ε between the reciprocal values at N−1 and N; the checked inverse-scale transform then yields the full source asymptotic.
 
 For A=h/ε and S=A-log A-2, the integers nearest exp(S±η) bracket N_h(ε) eventually for every fixed η>0; hence log N_h=S+o(1).
 
@@ -684,10 +688,10 @@ J_*(a)=∫(s-1)²κ₁(s)κ_a(s)ds has the displayed logarithmic closed form for
 ### `kernel_taylor`
 
 - Source: Appendix A; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.kernel_taylor`.
-- Status: **TODO**.
+- Lean correspondence: `Curvature.kernel_remainder_identity, integral_kernelRemainderDensity_pos, kernel_bound_eq_iff`.
+- Status: **PROVED**.
 - Dependencies: `kernel_density`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Coverage by an alternate proof: the exact same positive remainder is represented by an explicitly evaluated integral, on both sides of a=1, with equality only at a=1. This replaces the source Taylor proof. Its sixth derivative and five vanishing jets are neither used nor claimed as separately kernel-checked assertions; the proof-critical remainder positivity and equality conclusion are fully proved.
 
 The smooth M(a) defined from J_* has M^(j)(1)=0 for 0≤j≤5 and M^(6)(a)=360(a-1)(2a³+12a²-10a+13)/a⁴. The cubic equals 2a³+12(a-5/12)²+131/12>0 for a>0.
 
@@ -814,20 +818,20 @@ For nonduplicates b_m(1)<ℓ(1), b_m(2)<ℓ(2). When a=0 or q_m<a, increasing-ba
 ### `finite_phase_reduction`
 
 - Source: Appendix B.3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.finite_phase_reduction`.
-- Status: **TODO**.
+- Lean correspondence: `phaseCutoff, heavy_all_comparisons_iff_finite`.
+- Status: **PROVED**.
 - Dependencies: `thm:heavy-crossing`, `thm:light-crossing`, `lem:cutoff`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The real cutoff excludes all larger multiplicities at once for s≤T_m; for s>T_m the adjacent candidate wins. This proves exact equivalence to finitely many crossing comparisons.
 
 For T_m=τ_(m,m+1),R_m=max(m+1,ceil(hT_m+1)), m loses to m+1 when t>T_m. For 1≤t≤T_m, all j>R_m lose to R_m by the cutoff. Thus finitely many comparisons suffice; all endpoint ties are retained.
 
 ### `winning_multiplicity`
 
 - Source: Appendix B.3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.winning_multiplicity`.
-- Status: **TODO**.
+- Lean correspondence: `heavy_comparison_persists, winning_heavy_multiplicity_mono`.
+- Status: **PROVED**.
 - Dependencies: `thm:heavy-crossing`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Once a larger heavy candidate ties or beats a smaller one, it strictly beats it at every larger positive real sample exponent; hence winning integer multiplicities cannot decrease.
 
 At fixed h, if i<j and b_j(t₁)≥b_i(t₁), then b_j(t₂)>b_i(t₂) for t₂>t₁. Therefore heavy winning multiplicities cannot decrease as integer sample size increases.
 
@@ -856,10 +860,30 @@ The stationarity equation f′_t(z)=f′_t((1-z)/(N-1)) is equivalent on (0,1) t
 - Source: Appendix C; unnamed supporting assertion.
 - Lean correspondence: `finite_alphabet_candidate_complete, exists_feasible_of_mem_finiteAlphabetValueList, finiteAlphabet_globalMax_iff`.
 - Status: **PROVED**.
-- Dependencies: `finite_slack`, `finite_polynomial`, `cutoff_discrete`, `zero_entropy`.
+- Dependencies: `finite_slack`, `finite_polynomial`, `cutoff_discrete`, `zero_entropy`, `finite_realization`.
 - Reformulation/equivalence/alternate proof: Every actual maximizer belongs to the source candidate list; every listed entry is feasible. Saturated support fitting is expressed by zero insertion and actual finite realization, preserving all zero-coordinate endpoints.
 
 Keep saturated candidates with support≤N and all feasible stationary full-support candidates. Every maximizer belongs to this finite list; excluded heavy multiplicities are beaten by a smaller-support candidate. All listed candidates are feasible. Include N=1,h=0 and feasible full-support uniform laws.
+
+### `finite_realization`
+
+- Source: Appendix C; unnamed representation-equivalence assertion.
+- Lean correspondence: `ProbabilityVector.finiteRealizable_iff, FiniteRealizable.exists_preserving, finiteRealizable_candidate_iff, finiteRealizable_zero_candidate_iff`.
+- Status: **PROVED**.
+- Dependencies: `probability`, `entropy`, `objective`, `shape_boundaries`.
+- Reformulation/equivalence/alternate proof: Exact realization by a law on Fin N and zero extension is equivalent to finite positive support of cardinality at most N. Entropy and every objective are preserved. Interior candidates require m+1≤N; the zero endpoint requires only m≤N.
+
+A saturated candidate fits the finite alphabet exactly when its positive support has size at most N, with zero coordinates deleted or inserted as needed. This includes the a=0, k=N endpoint.
+
+### `singleton_estimator`
+
+- Source: Sharp asymptotics and occupancy consequences; paragraph following cor:occupancy.
+- Lean correspondence: `expectedSingletonEstimator_eq, singleton_estimator_expectation_max, singleton_estimator_optimizer_iff, singleton_estimator_optimizer_iff_finite_candidate`.
+- Status: **PROVED**.
+- Dependencies: `occupancy_identities`, `cor:occupancy`.
+- Reformulation/equivalence/alternate proof: The actual IID statistic K_n,1/n has ordinary integral expectation Phi_(n-1), for n>0. Its greatest feasible expectation is attained and all equality cases are exactly the missing-mass maximizers. The finite-candidate iff applies for n≥2 and h>0.
+
+The singleton estimator K_n,1/n has maximum expectation B_(n-1)(h), with the same maximizing laws as the corresponding missing-mass objective.
 
 ### `log_certificate`
 
@@ -1136,10 +1160,10 @@ we have, uniformly over the choice of a maximizer,
 ### `cor:sample-complexity`
 
 - Source: Sharp asymptotics and occupancy consequences; TeX label: `cor:sample-complexity`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.cor_sample_complexity`.
-- Status: **TODO**.
+- Lean correspondence: `sampleComplexity_spec, lt_optimalValue_of_lt_sampleComplexity, sampleComplexity_asymptotic_ratio, sampleComplexity_asymptotic`.
+- Status: **PROVED**.
 - Dependencies: `asymptotic_inversion`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The sample complexity is the actual least natural number satisfying B_t≤ε, defined by Nat.find after proving existence. Its ratio to the displayed expression tends to one as positive ε decreases to zero; the standard IsEquivalent formulation is also checked.
 
 Exact manuscript statement/display:
 
@@ -1271,10 +1295,10 @@ is strictly reversed.
 ### `cor:phase-intervals`
 
 - Source: Crossing structure of the candidate family; TeX label: `cor:phase-intervals`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.cor_phase_intervals`.
-- Status: **TODO**.
+- Lean correspondence: `heavy_globalMax_iff_phase_interval, heavy_never_wins_of_reversed_endpoints, light_globalMax_iff_phase_intervals`.
+- Status: **PROVED**.
 - Dependencies: `finite_phase_reduction`, `thm:finite-classification`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact specified crossing roots define a finite max and min. The heavy upper endpoint is proved finite even when its light-heavy endpoint is infinity. Closed heavy intervals and the complement of a finite union of open light-losing intervals preserve every tie.
 
 Exact manuscript statement/display:
 
@@ -1356,10 +1380,10 @@ Exact manuscript statement/display:
 ### `eq:variations`
 
 - Source: The three-coordinate reduction; TeX label: `eq:variations`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_variations`.
-- Status: **TODO**.
+- Lean correspondence: `TripleGeometry.entropyCurve_objective_variations, mixed_partialE_partialP`.
+- Status: **PROVED**.
 - Dependencies: `entropy_curve`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Literal first and second derivatives of the actual objective on the actual entropy curve, including the mixed-partial symmetry and K F_P term. No coefficient-route substitution or assumed stationarity is used.
 
 Exact manuscript statement/display:
 
@@ -1773,10 +1797,10 @@ Exact manuscript statement/display:
 ### `eq:optimizer-d`
 
 - Source: Sharp asymptotics and occupancy consequences; TeX label: `eq:optimizer-d`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_optimizer_d`.
-- Status: **TODO**.
+- Lean correspondence: `optimalHeavy_entropy_remainder_uniform`.
+- Status: **PROVED**.
 - Dependencies: `optimizer_bounds`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: An explicit uniform error of at most 2h/log t proves exactly the stated O_h(1/log t) remainder, with one threshold for all maximizing heavy parameters.
 
 Exact manuscript statement/display:
 
@@ -1787,10 +1811,10 @@ d=T-\log u+1+O_h(T^{-1}).
 ### `eq:reciprocal-uniform`
 
 - Source: Sharp asymptotics and occupancy consequences; TeX label: `eq:reciprocal-uniform`.
-- Lean correspondence: `heavy_competitive_reciprocal_lower_strong, optimalHeavy_eventually_estimates`.
+- Lean correspondence: `optimalHeavy_reciprocal_perturbation_uniform, optimalHeavy_reciprocal_error_tendsto`.
 - Status: **PROVED**.
 - Dependencies: `reciprocal_lower`.
-- Reformulation/equivalence/alternate proof: Stronger explicit lower bound retains the scalar gap uniformly over every maximizing heavy root.
+- Reformulation/equivalence/alternate proof: The literal reciprocal perturbation bound has explicit error (36/h)(log t)^2 rho_h^t, uniformly over every maximizing heavy root. The error multiplied by log t tends to zero, proving the stated little-o remainder.
 
 Exact manuscript statement/display:
 
@@ -1821,10 +1845,10 @@ Exact manuscript statement/display:
 ### `eq:sample-complexity`
 
 - Source: Sharp asymptotics and occupancy consequences; TeX label: `eq:sample-complexity`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_sample_complexity`.
-- Status: **TODO**.
+- Lean correspondence: `sampleComplexity_asymptotic`.
+- Status: **PROVED**.
 - Dependencies: `cor:sample-complexity`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact source equivalence with exp(2)*h in the denominator, along the one-sided positive-neighborhood filter at zero.
 
 Exact manuscript statement/display:
 
@@ -1946,10 +1970,10 @@ b_m(1)<\ell(1),\qquad b_m(2)<\ell(2).
 ### `eq:phase-cutoff`
 
 - Source: Crossing structure of the candidate family; TeX label: `eq:phase-cutoff`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_phase_cutoff`.
-- Status: **TODO**.
+- Lean correspondence: `phaseCutoff, phaseCutoff_ge_succ, phaseCutoff_ge_sample_entropy`.
+- Status: **PROVED**.
 - Dependencies: `finite_phase_reduction`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact R_m=max(m+1,ceil(hT_m+1)) with the source adjacent crossing.
 
 Exact manuscript statement/display:
 
@@ -1961,10 +1985,10 @@ T_m=\tau_{m,m+1},\qquad
 ### `eq:phase-endpoints`
 
 - Source: Crossing structure of the candidate family; TeX label: `eq:phase-endpoints`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_phase_endpoints`.
-- Status: **TODO**.
+- Lean correspondence: `phaseLower, phaseUpper, phaseLower_le_iff, le_phaseUpper_iff, phaseUpper_ne_top`.
+- Status: **PROVED**.
 - Dependencies: `finite_phase_reduction`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Literal finite extrema of the specified crossing roots; WithTop represents the possible infinite light-heavy endpoint, and the resulting heavy upper endpoint is finite.
 
 Exact manuscript statement/display:
 
@@ -1982,10 +2006,10 @@ Exact manuscript statement/display:
 ### `eq:heavy-phase`
 
 - Source: Crossing structure of the candidate family; TeX label: `eq:heavy-phase`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_heavy_phase`.
-- Status: **TODO**.
+- Lean correspondence: `heavy_globalMax_iff_phase_interval`.
+- Status: **PROVED**.
 - Dependencies: `cor:phase-intervals`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The canonical heavy distribution is globally optimal exactly at integer points of the closed source interval.
 
 Exact manuscript statement/display:
 
@@ -1996,10 +2020,10 @@ Exact manuscript statement/display:
 ### `eq:light-phase`
 
 - Source: Crossing structure of the candidate family; TeX label: `eq:light-phase`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_light_phase`.
-- Status: **TODO**.
+- Lean correspondence: `light_globalMax_iff_phase_intervals`.
+- Status: **PROVED**.
 - Dependencies: `cor:phase-intervals`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The canonical light law is optimal exactly outside the finite union of open crossing intervals, excluding the proved binary duplicate.
 
 Exact manuscript statement/display:
 

@@ -73,5 +73,16 @@ import EntropyConstrainedMissingMass.LogarithmicAverage
 
 import EntropyConstrainedMissingMass.OccupancyExtrema
 
+import EntropyConstrainedMissingMass.PhaseIntervals
+import EntropyConstrainedMissingMass.OptimizationEndpoints
+
+import EntropyConstrainedMissingMass.EntropyCurveHessian
+import EntropyConstrainedMissingMass.CoefficientAudit
+import EntropyConstrainedMissingMass.AsymptoticOptimizerEntropy
+
+import EntropyConstrainedMissingMass.SampleComplexity
+import EntropyConstrainedMissingMass.SingletonEstimator
+import EntropyConstrainedMissingMass.FiniteRealization
+
 /-! Formalization of the entropy-constrained missing-mass manuscript.
-See FORMALIZATION_STATUS.md for the correspondence and outstanding obligations. -/
+See FORMALIZATION_STATUS.md for the audited manuscript correspondence. -/
