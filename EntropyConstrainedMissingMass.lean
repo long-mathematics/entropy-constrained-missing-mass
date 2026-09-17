@@ -61,5 +61,17 @@ import EntropyConstrainedMissingMass.QuasiconvexRoots
 import EntropyConstrainedMissingMass.SmallSampleOptimality
 import EntropyConstrainedMissingMass.ExponentialZeros
 
+import EntropyConstrainedMissingMass.HeavyCrossing
+import EntropyConstrainedMissingMass.FiniteAlphabetClassification
+import EntropyConstrainedMissingMass.CandidateShapes
+import EntropyConstrainedMissingMass.LogCertificates
+
+import EntropyConstrainedMissingMass.LightCrossing
+import EntropyConstrainedMissingMass.AsymptoticOptimizerScales
+import EntropyConstrainedMissingMass.CertifiedExamples
+import EntropyConstrainedMissingMass.LogarithmicAverage
+
+import EntropyConstrainedMissingMass.OccupancyExtrema
+
 /-! Formalization of the entropy-constrained missing-mass manuscript.
 See FORMALIZATION_STATUS.md for the correspondence and outstanding obligations. -/

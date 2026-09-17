@@ -260,5 +260,24 @@ theorem four_term_zeros (A B C D a b c d : ℝ)
     four_term_zeros_exp A B C D (Real.log a) (Real.log b) (Real.log c) (Real.log d)
       hA hB hC hD (Real.log_lt_log ha hab) (Real.log_lt_log hb hbc) (Real.log_lt_log hc hcd)
 
+theorem three_term_zeros_rpow (A B C a b c : ℝ) (ha : 0 < a) (hab : a < b) (hbc : b < c)
+    (hn : ∃ x : ℝ, A * a ^ x + B * b ^ x + C * c ^ x ≠ 0) :
+    ZeroMultiplicityBound (fun x : ℝ => A * a ^ x + B * b ^ x + C * c ^ x) 2 := by
+  have hz := exponential_sum_zeros_rpow (Finset.univ : Finset (Fin 3)) ![A, B, C] ![a, b, c]
+    (by intro i _; fin_cases i <;> simp <;> linarith)
+    (by intro i _ j _ hij; fin_cases i <;> fin_cases j <;> simp_all <;> linarith)
+    (by simpa [Fin.sum_univ_succ, add_assoc] using hn)
+  simpa [Fin.sum_univ_succ, add_assoc] using hz
+
+theorem four_term_zeros_rpow (A B C D a b c d : ℝ) (ha : 0 < a)
+    (hab : a < b) (hbc : b < c) (hcd : c < d)
+    (hn : ∃ x : ℝ, A * a ^ x + B * b ^ x + C * c ^ x + D * d ^ x ≠ 0) :
+    ZeroMultiplicityBound (fun x : ℝ => A * a ^ x + B * b ^ x + C * c ^ x + D * d ^ x) 3 := by
+  have hz := exponential_sum_zeros_rpow (Finset.univ : Finset (Fin 4)) ![A, B, C, D] ![a, b, c, d]
+    (by intro i _; fin_cases i <;> simp <;> linarith)
+    (by intro i _ j _ hij; fin_cases i <;> fin_cases j <;> simp_all <;> linarith)
+    (by simpa [Fin.sum_univ_succ, add_assoc] using hn)
+  simpa [Fin.sum_univ_succ, add_assoc] using hz
+
 end
 end EntropyConstrainedMissingMass
