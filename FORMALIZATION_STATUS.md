@@ -2,18 +2,15 @@
 
 The entire manuscript (1,350 lines, including all appendices) was read on
 2026-09-16. This is the initial exhaustive inventory, subject to the mandatory
-independent final reread. **Five of 18 named manuscript results are proved in Lean: `thm:main`, `lem:entropy`, `lem:entropy-series`, `lem:coefficient-extremum`, and `lem:comparison`.**
+independent final reread. **11 of 18 named manuscript results are proved in Lean.** The checked names are `thm:main`, `lem:entropy`, `lem:coefficient-extremum`, `lem:comparison`, `lem:repeated`, `thm:exceptional`, `lem:cutoff`, `thm:finite-classification`, `cor:small-samples`, `lem:entropy-series`, `lem:zero-count`.
 The Python certificates are independent checks, not Lean proofs. Definitions,
 equation cross-checks, and subsidiary obligations are counted separately below.
 
 ## Persistent state and next action
 
-- Baseline: `4ab94ca` (PR #2 squash-merged); work branch: `formalization/entropy-curvature-and-local-variations`.
+- Baseline: `7aaefec` (PR #3 squash-merged); work branch: `formalization/exceptional-atoms-and-candidate-classification`.
 - Pinned Lean: v4.34.0; mathlib: `5ed2965256430c3649e86755f9576b54eca72435`.
-- Current frontier: one-exceptional-atom representation and the general repeated-size
-  criterion, then finite candidate completeness/cutoff. The complete main theorem
-  and sharp entropy-curvature lemma (both equality cases) now kernel-check.
-  No finite-support assumption was used for the local structural theorem or attainment.
+- Current frontier: fixed-entropy asymptotics, crossing structure, and finite-alphabet classification. The repeated-size criterion, exceptional representation, real heavy cutoff, exact finite classification, small-sample optimizer/value corollary, and multiplicity-aware exponential zero counting now kernel-check. Full root build passed (2,945 jobs); the current milestone remains unmerged pending review/audit.
 - Merged PR #2 validation: full `lake build` passed (2,898 jobs); namespace
   axiom audit checked 685 declarations (601 theorem constants including generated
   auxiliaries), all using only the three permitted standard axioms. Lexical audit
@@ -26,17 +23,21 @@ equation cross-checks, and subsidiary obligations are counted separately below.
   nondegeneracy, sharp curvature and equality characterizations. The main local
   structure and saturation results are stronger: they cover arbitrary/infinite
   alphabets respectively, while attainment covers all nonempty countable alphabets.
-- Current milestone validation: full `lake build` passed (2,928 jobs); root
+- Merged PR #3 validation: full `lake build` passed (2,928 jobs); root
   namespace audit checked 1,053 declarations (939 theorem constants including
   generated auxiliaries), all using only propext, Classical.choice and Quot.sound.
   Lexical audit of all 58 Lean files in the root import closure found no holes or
   custom axioms. Exact Python certificates passed. All 150 ledger nodes have
   valid acyclic dependencies; all 18 named source labels are represented.
   Complete milestone changes reviewed; no manuscript/PDF edits in this milestone.
-- Next concrete proof units: RepeatedFourVariation (general scalar-objective
-  wrapper), ExceptionalForm (checked actual candidate representation, pending
-  next milestone import), UniformForm/CandidateCompleteness, and HeavyInterpolation.
-  Their active files are deliberately outside the current main-theorem milestone.
+- Next concrete proof units: actual asymptotics for rounded heavy multiplicities, generic crossing signs from analytic zero bounds, and finite-alphabet slack stationarity/polynomial completeness. Root is closing remaining explicit formula and boundary correspondence checks. All agents own separate new modules.
+- Current milestone validation: full `lake build` passed (2,946 jobs). The
+  root namespace axiom audit checked 1,323 declarations (1,173 theorem constants,
+  including generated auxiliaries), all using only the three permitted standard
+  axioms. Lexical audit of all 72 Lean files in the root closure found no holes or
+  custom axioms. All 150 ledger entries have valid acyclic dependencies. Exact
+  Python certificates passed. The complete new proof units and correspondence
+  were reviewed; no manuscript or PDF changes.
 - No production CI or protection should be installed before the complete final audit.
 - Editorial change only: GPT 6 Sol → GPT-6 Astra; no mathematical TeX changes.
 - Previous milestone validation: `lake build` passed (2,273 jobs); `lake env lean scripts/audit_lean.lean`
@@ -71,7 +72,7 @@ correspondence, not a numerical test or a theorem conditional on the result.
 
 ## Coverage and dependency graph
 
-Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 62 PROVED, 7 IN PROGRESS, 81 TODO, 0 BLOCKED. Named results proved: 5/18.
+Tracked entries: **150** = 18 named results + 49 labelled equation cross-checks + 83 supporting obligations. Statuses: 85 PROVED, 6 IN PROGRESS, 59 TODO, 0 BLOCKED. Named results proved: 11/18.
 
 The `Dependencies` fields are the adjacency-list dependency graph (arrows from
 an obligation to prerequisites); it was checked for missing nodes and cycles.
@@ -431,10 +432,10 @@ For repeated x<y, -μ=(f′(y)-f′(x))/log(y/x)=∫_x^y uf″(u)du/u / log(y/x)
 ### `quasiconvex`
 
 - Source: §5.1; unnamed supporting assertion.
-- Lean correspondence: `weightedCurvature_strict_quasiconvex_on_interval, deriv_weightedCurvature_mul_one_sub, curvatureDerivativeQuadratic_strictAnti`.
-- Status: **IN PROGRESS**.
+- Lean correspondence: `weightedCurvature_strict_quasiconvex_on_interval, deriv_weightedCurvature_mul_one_sub, curvatureDerivativeQuadratic_strictAnti, curvature_quadratic_factor, curvature_roots_order`.
+- Status: **PROVED**.
 - Dependencies: `objective_calculus`.
-- Reformulation/equivalence/alternate proof: The full strict quasiconvexity conclusion is checked by a root-free quadratic sign argument, including t=1,2. Explicit displayed radical-root identities remain unchecked.
+- Reformulation/equivalence/alternate proof: The full strict quasiconvexity conclusion is checked by a root-free quadratic sign argument, including t=1,2. Explicit radical roots and their ordering now also kernel-check in QuasiconvexRoots.
 
 For f_t and integer t≥1, uf″_t is strictly quasiconvex on the interval containing f″_t≤0. For t=1 it is -2u; for t>1 its derivative has the displayed quadratic with roots 0<r_-<2/(t+1)<r_+.
 
@@ -471,60 +472,60 @@ For h>0,k=floor(exp h), exactly one a∈[0,1/(k+1)) solves E_k(a)=h. It is zero 
 ### `candidate_completeness`
 
 - Source: §5.2; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.candidate_completeness`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.candidate_complete_of_localMax, candidate_complete_of_globalMax`.
+- Status: **PROVED**.
 - Dependencies: `thm:exceptional`, `entropy_saturation`, `entropy_roots`, `shape_boundaries`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual coordinate equality to a zero-extended entropy-matched light or heavy vector. Uniform endpoints and binary duplication are proved explicitly. Applies to all infinite alphabets for the local assertion.
 
 Every global optimizer on a countably infinite alphabet is p_L or p_m^H for m≥k, with the binary duplicate exactly when 0<h<log 2 and m=1.
 
 ### `real_heavy_roots`
 
 - Source: §5.3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.real_heavy_roots`.
-- Status: **TODO**.
+- Lean correspondence: `heavyRoot_spec, heavyRoot_eq_of_spec, contDiffAt_heavyRoot, hasDerivAt_heavyRoot, hasDerivAt_heavyLight, heavy_entropy_sigma`.
+- Status: **PROVED**.
 - Dependencies: `branch_entropy`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Canonical unique real-multiplicity root; smoothness follows from the implicit-function theorem and root uniqueness. All derivative identities are derived for this function.
 
 For h>0 and real m>exp h-1, a unique heavy root exists and depends smoothly on m. With σ=log(z/q)>0, h=-log z+(1-z)σ, dz/dm=q/σ>0 and dq/dm=-q(1+σ)/(mσ)<0.
 
 ### `heavy_derivative`
 
 - Source: §5.3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.heavy_derivative`.
-- Status: **TODO**.
+- Lean correspondence: `hasDerivAt_heavyValue, hasDerivAt_cutoffAux`.
+- Status: **PROVED**.
 - Dependencies: `real_heavy_roots`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Real powers give the actual continuation for all real exponents. The scalar derivative and auxiliary derivative are checked exactly.
 
 For real s≥1, db_m(s)/dm=q Ψ_s(z,q)/σ, Ψ_s=f′_s(z)-f′_s(q)+sqσ(1-q)^(s-1). For z≤1/s, use A′_z(u)=s(1+log(z/u))(1-u)^(s-2)(su-1)<0 on q<u<z.
 
 ### `heavy_cutoff_sign`
 
 - Source: §5.3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.heavy_cutoff_sign`.
-- Status: **TODO**.
+- Lean correspondence: `heavyPsi_neg_of_cutoff, heavy_cutoff`.
+- Status: **PROVED**.
 - Dependencies: `heavy_derivative`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The two source sign cases and s=1 are covered by the checked real-exponent cutoff proof.
 
 If z>1/s and m≥sh+1, f′_s(z)<0 and 1-q-sq(1+σ)>1-(sh+1)/m≥0, because (1-z)(1+σ)<h. Hence Ψ_s<0; include s=1.
 
 ### `cutoff_discrete`
 
 - Source: §5.3; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.cutoff_discrete`.
-- Status: **TODO**.
+- Lean correspondence: `branchObjective_lt_at_cutoff, ProbabilityVector.candidate_complete_at_cutoff`.
+- Status: **PROVED**.
 - Dependencies: `lem:cutoff`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Strict antitonicity on the real tail excludes every integer beyond the canonical cutoff; no tied optimizer is discarded.
 
 For M=max(k,ceil(th+1)), every integer j>M has b_j(t)<b_M(t). All removed candidates have strictly larger support.
 
 ### `small_samples_hessian`
 
 - Source: §5.4; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.small_samples_hessian`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.repeated_pair_weighted_bound, repeatedPairHessian_one, repeatedPairHessian_two, ProbabilityVector.not_localMax_heavy_candidate_smallSamples`.
+- Status: **PROVED**.
 - Dependencies: `repeated_variation`, `objective_calculus`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Entropy-feasible quadratic paths prove the necessary Hessian bound. Exact positive scalar formulas contradict it for t=1,2 and all natural m>=2.
 
 For heavy m≥2, write z=rq,q=1/(m+r),r>1. The necessary qf″_t(q)+μ≤0 instead equals 2q((r-1)/log r-1)>0 for t=1 and N_m(r)/((m+r)²log r)>0 for t=2.
 
@@ -751,20 +752,20 @@ For two finite equal-entropy laws, ∑_{j≥1}(Φ_j(p)-Φ_j(q))/j converges abso
 ### `rolle_multiplicity`
 
 - Source: Appendix B.1; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.rolle_multiplicity`.
-- Status: **TODO**.
+- Lean correspondence: `rolle_multiplicity, exponential_sum_zeros_of_nonzero`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Induction uses actual analytic orders, derivative order at each repeated zero, and Rolle zeros between consecutive roots.
 
 A nonzero exponential polynomial with r distinct positive bases has at most r-1 real zeros counted with analytic multiplicity: induction after division and differentiation, including repeated roots.
 
 ### `four_term_zeros`
 
 - Source: Appendix B.1; unnamed supporting assertion.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.four_term_zeros`.
-- Status: **TODO**.
+- Lean correspondence: `four_term_zeros_exp, four_term_zeros`.
+- Status: **PROVED**.
 - Dependencies: mathlib foundations.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The derivative after two positive exponential normalizations has strictly positive derivative; multiplicity-aware Rolle bounds recover the exact bound of two.
 
 For signs +,-,-,+ and strictly increasing positive bases, F/b^s has derivative whose quotient by (d/b)^s is strictly increasing and has at most one simple zero. Thus F has at most two real zeros counted with multiplicity.
 
@@ -988,10 +989,10 @@ where negative-index coefficients are zero.
 ### `lem:repeated`
 
 - Source: One exceptional atom and a finite classification; TeX label: `lem:repeated`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.lem_repeated`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.repeated_size_criterion, repeated_size_criterion_finite, repeated_size_criterion_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `repeated_variation`, `weighted_log_average`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual finite-coordinate local maximality for general scalar objectives, with the finite and countable bridges. Alternate proof uses entropy-decreasing quadratic paths and a limit to the critical acceleration; no stationarity or multiplier conclusion is assumed.
 
 Exact manuscript statement/display:
 
@@ -1012,10 +1013,10 @@ locally maximal under finite-coordinate perturbations.
 ### `thm:exceptional`
 
 - Source: One exceptional atom and a finite classification; TeX label: `thm:exceptional`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.thm_exceptional`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.exceptional_form_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `thm:main`, `lem:repeated`, `quasiconvex`, `shape_boundaries`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Every actual nonuniform local maximum on an arbitrary alphabet equals a zero extension of the displayed candidate vector, with positive natural multiplicity and z in (0,1) unequal to the repeated size. Ordering gives the light/heavy dichotomy.
 
 Exact manuscript statement/display:
 
@@ -1032,10 +1033,10 @@ Thus either $z<q$ (one light atom) or $z>q$ (one heavy atom).
 ### `lem:cutoff`
 
 - Source: One exceptional atom and a finite classification; TeX label: `lem:cutoff`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.lem_cutoff`.
-- Status: **TODO**.
+- Lean correspondence: `heavy_cutoff`.
+- Status: **PROVED**.
 - Dependencies: `heavy_derivative`, `heavy_cutoff_sign`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Actual derivative of the uniquely defined real-multiplicity heavy root and real-exponent objective is strictly negative throughout the stated domain, including s=1.
 
 Exact manuscript statement/display:
 
@@ -1051,10 +1052,10 @@ $E_m(z_m)=h$ with $z_m>1/(m+1)$. Then
 ### `thm:finite-classification`
 
 - Source: One exceptional atom and a finite classification; TeX label: `thm:finite-classification`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.thm_finite_classification`.
-- Status: **TODO**.
+- Lean correspondence: `optimalValue_eq_finiteCandidateMaximum, ProbabilityVector.globalMax_iff_finite_candidate, ProbabilityVector.support_card_le_candidateCutoff`.
+- Status: **PROVED**.
 - Dependencies: `candidate_completeness`, `cutoff_discrete`, `attainment`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: optimalValue is the genuine supremum over all feasible countable distributions. The finite max includes k through max(k,ceil(th+1)); the iff retains all ties and zero-coordinate embeddings, and the support bound is proved.
 
 Exact manuscript statement/display:
 
@@ -1075,10 +1076,10 @@ every global maximizer has at most $M+1$ positive coordinates.
 ### `cor:small-samples`
 
 - Source: One exceptional atom and a finite classification; TeX label: `cor:small-samples`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.cor_small_samples`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.globalMax_iff_lightCandidateForm_smallSamples, ProbabilityVector.optimalValue_eq_lightValue_smallSamples`.
+- Status: **PROVED**.
 - Dependencies: `small_samples_hessian`, `small_samples_scalar`, `candidate_completeness`, `attainment`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact optimizer iff on every countably infinite alphabet and equality of the genuine supremum to the canonical light value. Heavy multiplicity at least two is excluded by an actual feasible three-coordinate variation; the binary duplicate is explicitly reindexed.
 
 Exact manuscript statement/display:
 
@@ -1191,10 +1192,10 @@ $\Phi_j$ values converges absolutely and sums to zero.
 ### `lem:zero-count`
 
 - Source: Crossing structure of the candidate family; TeX label: `lem:zero-count`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.lem_zero_count`.
-- Status: **TODO**.
+- Lean correspondence: `exponential_sum_zeros_rpow, four_term_zeros`.
+- Status: **PROVED**.
 - Dependencies: `rolle_multiplicity`, `four_term_zeros`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: ZeroMultiplicityBound asserts finiteness of the entire real zero set and bounds the sum of actual analyticOrderAt multiplicities in ENat, including repeated roots. The nonzero-function assumption permits zero coefficients and is stronger than the source version.
 
 Exact manuscript statement/display:
 
@@ -1486,10 +1487,10 @@ Exact manuscript statement/display:
 ### `eq:exceptional-form`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:exceptional-form`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_exceptional_form`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.exceptional_form_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `thm:exceptional`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact coordinate representation via candidateVector and zeroExtend; no numerical or conditional representation.
 
 Exact manuscript statement/display:
 
@@ -1562,10 +1563,10 @@ q_m=\frac{1-z_m}{m},\qquad
 ### `eq:cutoff-decrease`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:cutoff-decrease`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_cutoff_decrease`.
-- Status: **TODO**.
+- Lean correspondence: `heavy_cutoff`.
+- Status: **PROVED**.
 - Dependencies: `lem:cutoff`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact derivative inequality for the canonical smooth real heavy family.
 
 Exact manuscript statement/display:
 
@@ -1576,10 +1577,10 @@ Exact manuscript statement/display:
 ### `eq:heavy-entropy-sigma`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:heavy-entropy-sigma`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_heavy_entropy_sigma`.
-- Status: **TODO**.
+- Lean correspondence: `heavy_entropy_sigma`.
+- Status: **PROVED**.
 - Dependencies: `real_heavy_roots`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact identity, derived from the unique root equation.
 
 Exact manuscript statement/display:
 
@@ -1590,10 +1591,10 @@ h=-\log z+(1-z)\sigma.
 ### `eq:heavy-m-derivatives`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:heavy-m-derivatives`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_heavy_m_derivatives`.
-- Status: **TODO**.
+- Lean correspondence: `hasDerivAt_heavyRoot, hasDerivAt_heavyLight`.
+- Status: **PROVED**.
 - Dependencies: `real_heavy_roots`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Both actual derivative identities, including their signs from heavy_parameters_pos.
 
 Exact manuscript statement/display:
 
@@ -1606,10 +1607,10 @@ Exact manuscript statement/display:
 ### `eq:heavy-objective-derivative`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:heavy-objective-derivative`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_heavy_objective_derivative`.
-- Status: **TODO**.
+- Lean correspondence: `hasDerivAt_heavyValue`.
+- Status: **PROVED**.
 - Dependencies: `heavy_derivative`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Exact real-exponent derivative and heavyPsi definition.
 
 Exact manuscript statement/display:
 
@@ -1621,10 +1622,10 @@ Exact manuscript statement/display:
 ### `eq:M-cutoff`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:M-cutoff`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_M_cutoff`.
-- Status: **TODO**.
+- Lean correspondence: `candidateCutoff, index_le_candidateCutoff, sample_entropy_le_candidateCutoff`.
+- Status: **PROVED**.
 - Dependencies: `thm:finite-classification`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Natural ceiling equals the mathematical ceiling on this positive domain; cutoff is the exact displayed maximum.
 
 Exact manuscript statement/display:
 
@@ -1635,10 +1636,10 @@ M=M(t,h)=\max\{k,\lceil th+1\rceil\},\qquad k=\lfloor e^h\rfloor.
 ### `eq:finite-maximum`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:finite-maximum`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_finite_maximum`.
-- Status: **TODO**.
+- Lean correspondence: `optimalValue_eq_finiteCandidateMaximum`.
+- Status: **PROVED**.
 - Dependencies: `thm:finite-classification`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: Genuine global supremum equals max of the canonical finite candidate values.
 
 Exact manuscript statement/display:
 
@@ -1649,10 +1650,10 @@ B_t(h)=\max\{\ell(t),b_k(t),b_{k+1}(t),\ldots,b_M(t)\}.
 ### `eq:small-sample-hessian`
 
 - Source: One exceptional atom and a finite classification; TeX label: `eq:small-sample-hessian`.
-- Intended Lean declaration: `EntropyConstrainedMissingMass.eq_small_sample_hessian`.
-- Status: **TODO**.
+- Lean correspondence: `ProbabilityVector.repeated_pair_weighted_bound, ProbabilityVector.repeatedPairHessian_nonpos_of_localMax`.
+- Status: **PROVED**.
 - Dependencies: `small_samples_hessian`.
-- Reformulation/equivalence/alternate proof: pending under the policy above.
+- Reformulation/equivalence/alternate proof: The source multiplier is represented by its explicit logarithmic secant; the necessary inequality follows from feasible quadratic paths without introducing a Lagrange multiplier.
 
 Exact manuscript statement/display:
 

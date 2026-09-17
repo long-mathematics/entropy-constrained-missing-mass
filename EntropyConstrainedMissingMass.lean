@@ -57,5 +57,9 @@ import EntropyConstrainedMissingMass.MainTheorem
 
 import EntropyConstrainedMissingMass.DerivativeLipschitz
 
+import EntropyConstrainedMissingMass.QuasiconvexRoots
+import EntropyConstrainedMissingMass.SmallSampleOptimality
+import EntropyConstrainedMissingMass.ExponentialZeros
+
 /-! Formalization of the entropy-constrained missing-mass manuscript.
 See FORMALIZATION_STATUS.md for the correspondence and outstanding obligations. -/

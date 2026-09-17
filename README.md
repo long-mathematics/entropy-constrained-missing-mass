@@ -80,7 +80,12 @@ coefficient-extremum, and finite coefficient-comparison lemmas. The proofs use
 actual ℓ¹ feasible perturbations, smooth entropy level curves, and a constructed
 tilted simplex probability law; finite support is a conclusion.
 
-The one-exceptional-atom and complete candidate classifications, asymptotics,
-crossing results, and remaining appendix obligations are still in progress.
+The repeated-size criterion, one-exceptional-atom theorem, real heavy-family
+cutoff, exact finite candidate classification on countably infinite alphabets,
+small-sample optimality and uniqueness, and exponential zero counting with
+multiplicities are also proved. Eleven of the 18 named results now kernel-check.
+
+Asymptotics, crossings, finite-alphabet classification, and remaining appendix
+obligations are still in progress.
 Production CI and main protection will be installed only after the complete
 correspondence audit passes.
