@@ -55,11 +55,15 @@ The manuscript can be compiled with a standard LaTeX installation, for example
 latexmk -pdf missing_mass_extremizers.tex
 ```
 
-## Lean formalization (in progress)
+## Lean formalization
 
-The pinned Lean 4/mathlib formalization is in `EntropyConstrainedMissingMass/`.
-It is **not yet a formalization of the entire paper**. The current theorem and
-proof-obligation correspondence is maintained in [FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md).
+All **18 named results** and their proof-critical dependencies are formalized in
+`EntropyConstrainedMissingMass/`. The final audit covers 152 ledger obligations,
+including equality cases, endpoints, countable alphabets, asymptotic uniformity,
+finite classifications, occupancy statistics, and exact numerical certificates.
+See [FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md) for the full correspondence
+and [FORMALIZATION_AUDIT.md](FORMALIZATION_AUDIT.md) for the independent audit and
+alternate proof routes.
 
 With [elan](https://github.com/leanprover/elan) installed, run:
 
@@ -67,27 +71,28 @@ With [elan](https://github.com/leanprover/elan) installed, run:
 lake exe cache get
 lake build
 lake env lean scripts/audit_lean.lean
+python3 scripts/audit_source.py
 python3 scripts/missing_mass_extremizers_certificates.py
 ```
 
-`lean-toolchain`, `lakefile.toml`, and `lake-manifest.json` pin the compiler and
-dependencies. `.lake/` and compiled Lean artifacts are not version controlled.
+`lean-toolchain`, `lakefile.toml`, and `lake-manifest.json` pin Lean v4.34.0 and
+all dependencies. `.lake/` and compiled Lean artifacts are not version controlled.
+For a clean rebuild of the project while retaining the pinned dependency cache:
 
-The modules prove the main two-size/local-maximizer theorem, finite support,
-attainment, infinite-alphabet entropy saturation, and the sharp entropy-curvature
-lemma with both equality characterizations. They also prove the entropy-series,
-coefficient-extremum, and finite coefficient-comparison lemmas. The proofs use
-actual ℓ¹ feasible perturbations, smooth entropy level curves, and a constructed
-tilted simplex probability law; finite support is a conclusion.
+```bash
+lake clean entropy_constrained_missing_mass
+lake build
+```
 
-The repeated-size criterion, exceptional-atom theorem, heavy-family cutoff,
-finite classifications, small-sample optimality, crossing theorems, and
-multiplicity-aware zero counting are also proved. The fixed-entropy asymptotics
-include uniform optimizer scales. All numerical certificates in Appendix D
-and the actual IID occupancy expectation formulas and optimizer classifications
-are checked. Sixteen of the 18 named results now kernel-check.
+The main theorem uses the actual ℓ¹ topology, extended-valued Shannon entropy,
+and arbitrary probability vectors; finite support is proved. The final kernel
+axiom audit checks 2,133 project declarations (1,912 theorem constants, including
+generated auxiliaries), using only `propext`, `Classical.choice`, and `Quot.sound`.
+There are no proof holes or project-added axioms. The Python audit checks owned
+sources, root import coverage, the named-result inventory, and ledger dependencies.
 
-Sample-complexity inversion, phase intervals, and the final exhaustive
-correspondence audit are still in progress.
-Production CI and main protection will be installed only after the complete
-correspondence audit passes.
+Principal entry points include `MainTheorem`, `EntropyCurvature`,
+`FiniteClassification`, `AsymptoticOptimizerScales`, `SampleComplexity`,
+`PhaseIntervals`, `FiniteAlphabetClassification`, `OccupancyExtrema`, and
+`CertifiedExamples`. The root `EntropyConstrainedMissingMass.lean` imports the
+complete formalization.
